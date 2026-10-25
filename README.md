@@ -69,19 +69,21 @@ Códigos: 200 consulta, 201 creación, 204 actualización o eliminación, 400 da
 
 ## Estado
 
-Rama `feature/api-rest`: estructura base + API REST.
+Rama `feature/api-rest`: estructura base + API REST (integrante 2).
 
 - [x] Solución, proyecto MVC .NET 10 y paquetes (EF Core 10.0.14, Swashbuckle 10.3.1).
 - [x] Entidades y `PersonaDbContext` **provisionales**, con la forma que dará Scaffold-DbContext.
 - [x] Interfaces DAO con las 5 operaciones de la sección 5.3 y registro en `Program.cs`.
 - [x] Validaciones de la Tabla 19 en `Models/Metadata/`, compartidas por la API y la interfaz MVC.
 - [x] Proyecto de pruebas `tests/PersonApi.Tests` con repositorios en memoria (`dotnet test`).
+- [x] API REST: 4 controladores en `Controllers/Api` con los 20 endpoints, comentarios XML y `[ProducesResponseType]`.
+- [x] Swagger UI en `/swagger` con documento OpenAPI 3.0 y JSON con `ReferenceHandler.IgnoreCycles`.
+- [x] Pruebas en `tests/PersonApi.Tests/Api/`: los 20 endpoints con 200, 201, 204, 400, 404 y 409 (incluida la
+  llave compuesta de estudios), validaciones con mensajes en español y el documento OpenAPI 3.0.
 - [ ] **Base de datos `persona_db`** (integrante 1).
 - [ ] **Scripts `01_ddl.sql` y `02_dml.sql`**: hoy solo tienen encabezado (integrante 1).
 - [ ] **Scaffolding real** que reemplace `Models/Entities/` (integrante 1).
 - [ ] **Repositorios**: hoy lanzan `NotImplementedException("Pendiente: integrante 1")` (integrante 1).
-- [x] API REST: 4 controladores en `Controllers/Api` con los 20 endpoints, comentarios XML y `[ProducesResponseType]`.
-- [x] Swagger UI en `/swagger` con documento OpenAPI 3.0 y JSON con `ReferenceHandler.IgnoreCycles`.
-- [ ] Probar los 20 endpoints contra la base: hoy responden 500 porque los repositorios están pendientes;
-  solo se verificaron el documento OpenAPI y los 400 que no tocan el repositorio.
-- [ ] Interfaz MVC: rama `feature/mvc` (integrante 3).
+- [ ] Probar los 20 endpoints contra la base real cuando estén los repositorios (integrante 1).
+
+La interfaz MVC está en la rama `feature/mvc`.
