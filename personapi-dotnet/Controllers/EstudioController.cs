@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Interfaces;
 using personapi_dotnet.Models.Entities;
 using personapi_dotnet.ViewModels;
@@ -69,10 +70,10 @@ public class EstudioController : Controller
         {
             await _estudios.AddAsync(estudio);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            // El repositorio lanza error si la pareja quedó repetida o la persona/profesión no existe
-            ModelState.AddModelError(string.Empty, $"No se pudo guardar el estudio. {MensajeParejaRepetida}");
+            // EF Core lanza DbUpdateException si la pareja quedó repetida o la persona/profesión no existe
+            ModelState.AddModelError(string.Empty, "No se pudo guardar el estudio. Verifique que la persona no tenga ya esa profesión y que las dos existan.");
             return View(await ArmarFormularioAsync(estudio));
         }
 
@@ -113,7 +114,7 @@ public class EstudioController : Controller
                 TempData["Mensaje"] = "Estudio actualizado.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex) when (ex is not NotImplementedException)
+            catch (DbUpdateException)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo actualizar el estudio.");
             }
@@ -148,9 +149,9 @@ public class EstudioController : Controller
         {
             await _estudios.DeleteAsync(idProf, ccPer);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            TempData["Error"] = "No se pudo borrar el estudio.";
+            TempData["Error"] = "No se pudo eliminar el estudio. Intente de nuevo.";
             return RedirectToAction(nameof(Delete), new { idProf, ccPer });
         }
 

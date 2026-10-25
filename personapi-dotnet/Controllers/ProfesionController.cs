@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Interfaces;
 using personapi_dotnet.Models.Entities;
 
@@ -64,9 +65,9 @@ public class ProfesionController : Controller
         {
             await _profesiones.AddAsync(profesion);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            // El repositorio lanza error si el id quedó repetido u otra restricción falló
+            // EF Core lanza DbUpdateException si el id quedó repetido u otra restricción falló
             ModelState.AddModelError(string.Empty, "No se pudo guardar la profesión. Verifique que el id no esté repetido.");
             return View(profesion);
         }
@@ -117,7 +118,7 @@ public class ProfesionController : Controller
                 TempData["Mensaje"] = "Profesión actualizada.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex) when (ex is not NotImplementedException)
+            catch (DbUpdateException)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo actualizar la profesión.");
             }
@@ -157,9 +158,9 @@ public class ProfesionController : Controller
         {
             await _profesiones.DeleteAsync(id);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            TempData["Error"] = "No se pudo borrar la profesión: tiene estudios asociados.";
+            TempData["Error"] = "No se pudo eliminar la profesión. Intente de nuevo.";
             return RedirectToAction(nameof(Delete), new { id });
         }
 

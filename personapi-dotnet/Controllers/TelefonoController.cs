@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Interfaces;
 using personapi_dotnet.Models.Entities;
 using personapi_dotnet.ViewModels;
@@ -65,10 +66,10 @@ public class TelefonoController : Controller
         {
             await _telefonos.AddAsync(telefono);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            // El repositorio lanza error si el número quedó repetido o el dueño no existe
-            ModelState.AddModelError(string.Empty, "No se pudo guardar el teléfono. Verifique que el número no esté repetido.");
+            // EF Core lanza DbUpdateException si el número quedó repetido o el dueño no existe
+            ModelState.AddModelError(string.Empty, "No se pudo guardar el teléfono. Verifique que el número no esté repetido y que el dueño exista.");
             return View(await ArmarFormularioAsync(telefono));
         }
 
@@ -110,7 +111,7 @@ public class TelefonoController : Controller
                 TempData["Mensaje"] = "Teléfono actualizado.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex) when (ex is not NotImplementedException)
+            catch (DbUpdateException)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo actualizar el teléfono.");
             }
@@ -145,9 +146,9 @@ public class TelefonoController : Controller
         {
             await _telefonos.DeleteAsync(id);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            TempData["Error"] = "No se pudo borrar el teléfono.";
+            TempData["Error"] = "No se pudo eliminar el teléfono. Intente de nuevo.";
             return RedirectToAction(nameof(Delete), new { id });
         }
 

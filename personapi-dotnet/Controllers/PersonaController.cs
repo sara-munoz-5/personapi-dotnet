@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Interfaces;
 using personapi_dotnet.Models.Entities;
 
@@ -64,9 +65,9 @@ public class PersonaController : Controller
         {
             await _personas.AddAsync(persona);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            // El repositorio lanza error si la cédula quedó repetida u otra restricción falló
+            // EF Core lanza DbUpdateException si la cédula quedó repetida u otra restricción falló
             ModelState.AddModelError(string.Empty, "No se pudo guardar la persona. Verifique que la cédula no esté repetida.");
             return View(persona);
         }
@@ -118,7 +119,7 @@ public class PersonaController : Controller
                 TempData["Mensaje"] = "Persona actualizada.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex) when (ex is not NotImplementedException)
+            catch (DbUpdateException)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo actualizar la persona.");
             }
@@ -158,9 +159,9 @@ public class PersonaController : Controller
         {
             await _personas.DeleteAsync(id);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException)
         {
-            TempData["Error"] = "No se pudo borrar la persona: tiene estudios o teléfonos asociados.";
+            TempData["Error"] = "No se pudo eliminar la persona. Intente de nuevo.";
             return RedirectToAction(nameof(Delete), new { id });
         }
 
