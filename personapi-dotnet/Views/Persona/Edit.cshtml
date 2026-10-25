@@ -13,7 +13,7 @@
             <div class="mb-3">
                 <label asp-for="Cc" class="form-label"></label>
                 @* La cédula es la llave: se muestra pero no se envía ni se edita *@
-                <input value="@Model.Cc" class="form-control" readonly disabled />
+                <input id="Cc" value="@Model.Cc" class="form-control" readonly disabled />
             </div>
             <div class="mb-3">
                 <label asp-for="Nombre" class="form-label"></label>

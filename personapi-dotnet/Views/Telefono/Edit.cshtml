@@ -13,7 +13,7 @@
             <div class="mb-3">
                 <label asp-for="Telefono.Num" class="form-label"></label>
                 @* El número es la llave: se muestra pero no se envía ni se edita *@
-                <input value="@Model.Telefono.Num" class="form-control" readonly disabled />
+                <input id="Telefono_Num" value="@Model.Telefono.Num" class="form-control" readonly disabled />
             </div>
             <div class="mb-3">
                 <label asp-for="Telefono.Oper" class="form-label"></label>

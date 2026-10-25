@@ -13,7 +13,7 @@
             <div class="mb-3">
                 <label asp-for="Id" class="form-label"></label>
                 @* El id es la llave: se muestra pero no se envía ni se edita *@
-                <input value="@Model.Id" class="form-control" readonly disabled />
+                <input id="Id" value="@Model.Id" class="form-control" readonly disabled />
             </div>
             <div class="mb-3">
                 <label asp-for="Nom" class="form-label"></label>

@@ -14,11 +14,11 @@
             @* Persona y profesión forman la llave: cambiarlas sería otro registro, por eso son de solo lectura *@
             <div class="mb-3">
                 <label asp-for="Estudio.CcPer" class="form-label"></label>
-                <input value="@estudio.CcPerNavigation?.Nombre @estudio.CcPerNavigation?.Apellido" class="form-control" readonly disabled />
+                <input id="Estudio_CcPer" value="@estudio.CcPerNavigation?.Nombre @estudio.CcPerNavigation?.Apellido" class="form-control" readonly disabled />
             </div>
             <div class="mb-3">
                 <label asp-for="Estudio.IdProf" class="form-label"></label>
-                <input value="@estudio.IdProfNavigation?.Nom" class="form-control" readonly disabled />
+                <input id="Estudio_IdProf" value="@estudio.IdProfNavigation?.Nom" class="form-control" readonly disabled />
             </div>
             <div class="mb-3">
                 <label asp-for="Estudio.Univer" class="form-label"></label>
