@@ -69,7 +69,7 @@ Códigos: 200 consulta, 201 creación, 204 actualización o eliminación, 400 da
 
 ## Estado
 
-Rama `chore/estructura-inicial`: estructura base.
+Rama `feature/api-rest`: estructura base + API REST.
 
 - [x] Solución, proyecto MVC .NET 10 y paquetes (EF Core 10.0.14, Swashbuckle 10.3.1).
 - [x] Entidades y `PersonaDbContext` **provisionales**, con la forma que dará Scaffold-DbContext.
@@ -80,6 +80,8 @@ Rama `chore/estructura-inicial`: estructura base.
 - [ ] **Scripts `01_ddl.sql` y `02_dml.sql`**: hoy solo tienen encabezado (integrante 1).
 - [ ] **Scaffolding real** que reemplace `Models/Entities/` (integrante 1).
 - [ ] **Repositorios**: hoy lanzan `NotImplementedException("Pendiente: integrante 1")` (integrante 1).
-
-La API REST está en la rama `feature/api-rest` (integrante 2) y la interfaz MVC en `feature/mvc` (integrante 3);
-las dos están terminadas y probadas con los repositorios en memoria.
+- [x] API REST: 4 controladores en `Controllers/Api` con los 20 endpoints, comentarios XML y `[ProducesResponseType]`.
+- [x] Swagger UI en `/swagger` con documento OpenAPI 3.0 y JSON con `ReferenceHandler.IgnoreCycles`.
+- [ ] Probar los 20 endpoints contra la base: hoy responden 500 porque los repositorios están pendientes;
+  solo se verificaron el documento OpenAPI y los 400 que no tocan el repositorio.
+- [ ] Interfaz MVC: rama `feature/mvc` (integrante 3).
