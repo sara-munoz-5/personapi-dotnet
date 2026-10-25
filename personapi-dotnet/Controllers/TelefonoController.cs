@@ -103,8 +103,6 @@ public class TelefonoController : Controller
         // Contra la sobrepublicación: el número es la llave; solo se editan operador y dueño
         if (await TryUpdateModelAsync(telefono, nameof(TelefonoFormViewModel.Telefono), t => t.Oper, t => t.Duenio))
         {
-            // Se suelta la navegación cargada para que no contradiga al nuevo dueño al guardar
-            telefono.DuenioNavigation = null!;
             try
             {
                 await _telefonos.UpdateAsync(telefono);
@@ -113,7 +111,7 @@ public class TelefonoController : Controller
             }
             catch (DbUpdateException)
             {
-                ModelState.AddModelError(string.Empty, "No se pudo actualizar el teléfono.");
+                ModelState.AddModelError(string.Empty, "No se pudo actualizar el teléfono. Verifique que el dueño exista.");
             }
         }
 
