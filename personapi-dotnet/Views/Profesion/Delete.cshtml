@@ -1,0 +1,32 @@
+@model Profesion
+@{
+    ViewData["Title"] = "Borrar profesión";
+}
+
+<h1>Borrar profesión</h1>
+
+<partial name="_Mensajes" />
+
+@if (Model.Estudios.Count > 0)
+{
+    <div class="alert alert-warning" role="alert">
+        Al borrar esta profesión también se borrarán <strong>@Model.Estudios.Count estudio(s)</strong>
+        de personas que la registraron.
+    </div>
+}
+
+<p>¿Seguro que desea borrar esta profesión?</p>
+
+<dl class="row">
+    <dt class="col-sm-3">Id</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nom</dd>
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Des) ? "Sin descripción" : Model.Des)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Borrar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

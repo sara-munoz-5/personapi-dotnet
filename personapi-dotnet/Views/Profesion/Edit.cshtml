@@ -1,0 +1,37 @@
+@model Profesion
+@{
+    ViewData["Title"] = "Editar profesión";
+}
+
+<h1>Editar profesión</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Id" class="form-label"></label>
+                @* El id es la llave: se muestra pero no se envía ni se edita *@
+                <input value="@Model.Id" class="form-control" readonly disabled />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Nom" class="form-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Des" class="form-label"></label>
+                <textarea asp-for="Des" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Des" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
