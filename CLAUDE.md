@@ -22,6 +22,7 @@ Fuente de verdad: `docs/Laboratorio1_personapi-dotnet_Investigacion_completa.pdf
 ### Agregados aprobados que no están en el documento
 - `.editorconfig`, `global.json` (SDK 10.0.100, `rollForward: latestFeature`), este `CLAUDE.md`.
 - `Models/Metadata/`: clases `[ModelMetadataType]` con las validaciones de la Tabla 19, para no tocar las entidades generadas.
+  Vive en la base porque la usan la API (400 automático de `[ApiController]`) y la interfaz MVC.
 
 ## Modelo de datos (sección 4.4)
 - `profesion(id PK, nom VARCHAR(90), des VARCHAR(MAX) NULL)`
@@ -39,6 +40,9 @@ Fuente de verdad: `docs/Laboratorio1_personapi-dotnet_Investigacion_completa.pdf
 ## API REST (secciones 4.5 y 5.1)
 - Rutas: `api/personas/{cc}`, `api/profesiones/{id}`, `api/estudios/{idProf}/{ccPer}`, `api/telefonos/{num}`.
 - GET todos 200 · GET uno 200/404 · POST 201 (CreatedAtAction)/409 · PUT 204/400 (id distinto)/404 · DELETE 204/404.
+- **Diferencia con la Tabla 12 (decisión del equipo):** 409 también cuando el registro relacionado no existe
+  (persona o profesión de un estudio, dueño de un teléfono; incluye el PUT de teléfonos al cambiar de dueño).
+  Se captura solo `DbUpdateException`.
 - JSON con `ReferenceHandler.IgnoreCycles`; comentarios XML y `[ProducesResponseType]` en cada endpoint.
 
 ## Interfaz MVC (secciones 6.3 a 6.7)
