@@ -2,7 +2,50 @@
     ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">personapi-dotnet</h1>
-    <p>Laboratorio 1 de Arquitectura de Software: monolito ASP.NET Core MVC con patrones MVC y DAO.</p>
+<div class="text-center mb-4">
+    <h1 class="display-5">personapi-dotnet</h1>
+    <p class="lead">CRUD de personas, profesiones, estudios y teléfonos sobre ASP.NET Core MVC con el patrón DAO.</p>
 </div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title">Personas</h2>
+                <p class="card-text">Cédula, nombre, apellido, género y edad, con sus estudios y teléfonos.</p>
+                <a asp-controller="Persona" asp-action="Index" class="btn btn-primary">Ver personas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title">Profesiones</h2>
+                <p class="card-text">Catálogo de profesiones con su descripción.</p>
+                <a asp-controller="Profesion" asp-action="Index" class="btn btn-primary">Ver profesiones</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title">Estudios</h2>
+                <p class="card-text">Qué profesión estudió cada persona, dónde y cuándo.</p>
+                <a asp-controller="Estudio" asp-action="Index" class="btn btn-primary">Ver estudios</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title">Teléfonos</h2>
+                <p class="card-text">Números, operador y dueño de cada teléfono.</p>
+                <a asp-controller="Telefono" asp-action="Index" class="btn btn-primary">Ver teléfonos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="text-center mt-4">
+    La API REST está documentada en <a href="~/swagger" target="_blank" rel="noopener">Swagger</a>.
+</p>

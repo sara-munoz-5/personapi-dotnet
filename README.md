@@ -69,7 +69,7 @@ Códigos: 200 consulta, 201 creación, 204 actualización o eliminación, 400 da
 
 ## Estado
 
-Rama `chore/estructura-inicial`: estructura base.
+Rama `feature/mvc`: estructura base + interfaz MVC.
 
 - [x] Solución, proyecto MVC .NET 10 y paquetes (EF Core 10.0.14, Swashbuckle 10.3.1).
 - [x] Entidades y `PersonaDbContext` **provisionales**, con la forma que dará Scaffold-DbContext.
@@ -80,6 +80,9 @@ Rama `chore/estructura-inicial`: estructura base.
 - [ ] **Scripts `01_ddl.sql` y `02_dml.sql`**: hoy solo tienen encabezado (integrante 1).
 - [ ] **Scaffolding real** que reemplace `Models/Entities/` (integrante 1).
 - [ ] **Repositorios**: hoy lanzan `NotImplementedException("Pendiente: integrante 1")` (integrante 1).
-
-La API REST está en la rama `feature/api-rest` (integrante 2) y la interfaz MVC en `feature/mvc` (integrante 3);
-las dos están terminadas y probadas con los repositorios en memoria.
+- [ ] API REST y Swagger: rama `feature/api-rest` (integrante 2).
+- [x] Interfaz MVC: 4 controladores (32 acciones) y 20 vistas Razor con Bootstrap 5, validaciones de la Tabla 19
+  en `Models/Metadata/`, listas desplegables en `ViewModels/`, menú del layout y página de inicio.
+- [ ] Probar las vistas contra la base real (hoy se probaron con repositorios en memoria, fuera del repositorio).
+- [ ] El enlace a Swagger del menú responde 404 en esta rama hasta integrar `feature/api-rest`.
+- [ ] Capturas de cada vista en `docs/capturas/`.
