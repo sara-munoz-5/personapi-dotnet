@@ -23,6 +23,9 @@ Fuente de verdad: `docs/Laboratorio1_personapi-dotnet_Investigacion_completa.pdf
 - `.editorconfig`, `global.json` (SDK 10.0.100, `rollForward: latestFeature`), este `CLAUDE.md`.
 - `Models/Metadata/`: clases `[ModelMetadataType]` con las validaciones de la Tabla 19, para no tocar las entidades generadas.
   Vive en la base porque la usan la API (400 automático de `[ApiController]`) y la interfaz MVC.
+- `tests/PersonApi.Tests` (xUnit, en la solución): `Fakes/` con repositorios en memoria de las 4 interfaces
+  (solo existen aquí, nunca en el proyecto web), `Api/` y `Mvc/` con pruebas por HTTP usando `WebApplicationFactory`.
+  Cada prueba crea su propia fábrica y sus datos, para no depender del orden.
 
 ## Modelo de datos (sección 4.4)
 - `profesion(id PK, nom VARCHAR(90), des VARCHAR(MAX) NULL)`
@@ -58,4 +61,5 @@ Fuente de verdad: `docs/Laboratorio1_personapi-dotnet_Investigacion_completa.pdf
 
 ## Convenciones
 - Comentarios y textos visibles en español.
-- Compilar: `dotnet build personapi-dotnet.sln`.
+- Compilar: `dotnet build personapi-dotnet.sln` (0 advertencias). Probar: `dotnet test personapi-dotnet.sln`.
+- Formato: `dotnet format personapi-dotnet.sln --verify-no-changes` debe salir limpio.

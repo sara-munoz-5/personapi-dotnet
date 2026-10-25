@@ -44,6 +44,17 @@ dotnet run --project personapi-dotnet
 - Aplicación: http://localhost:5124
 - Swagger UI: http://localhost:5124/swagger
 
+## Pruebas
+
+```bash
+dotnet test personapi-dotnet.sln
+```
+
+`tests/PersonApi.Tests` (xUnit) levanta la aplicación con `WebApplicationFactory` y cambia los repositorios
+reales por repositorios en memoria (`Fakes/`), así que no necesita SQL Server. Cada prueba usa sus propios
+datos de ejemplo. `Api/` prueba los 20 endpoints y el documento OpenAPI; `Mvc/` prueba las vistas con los
+casos de la Tabla 21 (sección 6.9).
+
 ## Endpoints REST
 
 | Recurso | GET todos | GET uno | POST | PUT | DELETE |
@@ -54,7 +65,7 @@ dotnet run --project personapi-dotnet
 | Teléfonos | `/api/telefonos` | `/api/telefonos/{num}` | `/api/telefonos` | `/api/telefonos/{num}` | `/api/telefonos/{num}` |
 
 Códigos: 200 consulta, 201 creación, 204 actualización o eliminación, 400 datos inválidos o id distinto al del cuerpo,
-404 no existe, 409 llave repetida.
+404 no existe, 409 llave repetida o registro relacionado inexistente (persona, profesión o dueño).
 
 ## Estado
 
@@ -63,6 +74,8 @@ Rama `chore/estructura-inicial`: estructura base.
 - [x] Solución, proyecto MVC .NET 10 y paquetes (EF Core 10.0.14, Swashbuckle 10.3.1).
 - [x] Entidades y `PersonaDbContext` **provisionales**, con la forma que dará Scaffold-DbContext.
 - [x] Interfaces DAO con las 5 operaciones de la sección 5.3 y registro en `Program.cs`.
+- [x] Validaciones de la Tabla 19 en `Models/Metadata/`, compartidas por la API y la interfaz MVC.
+- [x] Proyecto de pruebas `tests/PersonApi.Tests` con repositorios en memoria (`dotnet test`).
 - [ ] **Base de datos `persona_db`** (integrante 1).
 - [ ] **Scripts `01_ddl.sql` y `02_dml.sql`**: hoy solo tienen encabezado (integrante 1).
 - [ ] **Scaffolding real** que reemplace `Models/Entities/` (integrante 1).
