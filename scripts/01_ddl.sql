@@ -1,0 +1,7 @@
+-- =============================================================
+-- personapi-dotnet - 01_ddl.sql
+-- Crea la base persona_db (dueño sa) y las tablas profesion,
+-- persona, estudios y telefono según la sección 4.4.
+-- Responsable: integrante 1 (persistencia)
+-- Estado: PENDIENTE
+-- =============================================================

@@ -1,0 +1,7 @@
+-- =============================================================
+-- personapi-dotnet - 02_dml.sql
+-- Datos de prueba, insertados en orden: profesion, persona,
+-- estudios y telefono (para respetar las FK).
+-- Responsable: integrante 1 (persistencia)
+-- Estado: PENDIENTE
+-- =============================================================
