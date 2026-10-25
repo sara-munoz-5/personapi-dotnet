@@ -69,20 +69,22 @@ Códigos: 200 consulta, 201 creación, 204 actualización o eliminación, 400 da
 
 ## Estado
 
-Rama `feature/mvc`: estructura base + interfaz MVC.
+Rama `feature/mvc`: estructura base + interfaz MVC (integrante 3).
 
 - [x] Solución, proyecto MVC .NET 10 y paquetes (EF Core 10.0.14, Swashbuckle 10.3.1).
 - [x] Entidades y `PersonaDbContext` **provisionales**, con la forma que dará Scaffold-DbContext.
 - [x] Interfaces DAO con las 5 operaciones de la sección 5.3 y registro en `Program.cs`.
 - [x] Validaciones de la Tabla 19 en `Models/Metadata/`, compartidas por la API y la interfaz MVC.
 - [x] Proyecto de pruebas `tests/PersonApi.Tests` con repositorios en memoria (`dotnet test`).
+- [x] Interfaz MVC: 4 controladores (32 acciones) y 20 vistas Razor con Bootstrap 5, listas desplegables en
+  `ViewModels/`, menú del layout y página de inicio.
+- [x] Pruebas en `tests/PersonApi.Tests/Mvc/`: los 15 casos de la Tabla 21 (sección 6.9) y los puntos de las
+  secciones 6.3 a 6.6 (antifalsificación, llave compuesta, listas, dependientes al borrar).
 - [ ] **Base de datos `persona_db`** (integrante 1).
 - [ ] **Scripts `01_ddl.sql` y `02_dml.sql`**: hoy solo tienen encabezado (integrante 1).
 - [ ] **Scaffolding real** que reemplace `Models/Entities/` (integrante 1).
 - [ ] **Repositorios**: hoy lanzan `NotImplementedException("Pendiente: integrante 1")` (integrante 1).
-- [ ] API REST y Swagger: rama `feature/api-rest` (integrante 2).
-- [x] Interfaz MVC: 4 controladores (32 acciones) y 20 vistas Razor con Bootstrap 5, validaciones de la Tabla 19
-  en `Models/Metadata/`, listas desplegables en `ViewModels/`, menú del layout y página de inicio.
-- [ ] Probar las vistas contra la base real (hoy se probaron con repositorios en memoria, fuera del repositorio).
-- [ ] El enlace a Swagger del menú responde 404 en esta rama hasta integrar `feature/api-rest`.
-- [ ] Capturas de cada vista en `docs/capturas/`.
+- [ ] Probar las vistas contra la base real y tomar las capturas cuando estén los repositorios (integrante 1).
+
+La API REST y Swagger están en la rama `feature/api-rest`; hasta integrarla, el enlace a Swagger del menú
+responde 404 en esta rama.
