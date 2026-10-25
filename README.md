@@ -80,5 +80,6 @@ Rama `chore/estructura-inicial`: estructura base.
 - [ ] **Scripts `01_ddl.sql` y `02_dml.sql`**: hoy solo tienen encabezado (integrante 1).
 - [ ] **Scaffolding real** que reemplace `Models/Entities/` (integrante 1).
 - [ ] **Repositorios**: hoy lanzan `NotImplementedException("Pendiente: integrante 1")` (integrante 1).
-- [ ] API REST y Swagger: rama `feature/api-rest` (integrante 2).
-- [ ] Interfaz MVC: rama `feature/mvc` (integrante 3).
+
+La API REST está en la rama `feature/api-rest` (integrante 2) y la interfaz MVC en `feature/mvc` (integrante 3);
+las dos están terminadas y probadas con los repositorios en memoria.
