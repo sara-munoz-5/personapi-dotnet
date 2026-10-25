@@ -92,7 +92,7 @@ public class TelefonoController : Controller
     // POST: /Telefono/Edit/{num}
     [HttpPost, ActionName("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditPost(string? id)
+    public async Task<IActionResult> EditPost([FromRoute] string? id)
     {
         var telefono = await BuscarAsync(id);
         if (telefono is null)
@@ -133,7 +133,7 @@ public class TelefonoController : Controller
     // POST: /Telefono/Delete/{num}
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(string id)
+    public async Task<IActionResult> DeleteConfirmed([FromRoute] string id)
     {
         if (await _telefonos.GetByIdAsync(id) is null)
         {

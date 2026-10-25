@@ -96,7 +96,7 @@ public class ProfesionController : Controller
     // POST: /Profesion/Edit/{id}
     [HttpPost, ActionName("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditPost(int? id)
+    public async Task<IActionResult> EditPost([FromRoute] int? id)
     {
         if (id is null)
         {
@@ -147,7 +147,7 @@ public class ProfesionController : Controller
     // POST: /Profesion/Delete/{id}
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed([FromRoute] int id)
     {
         if (await _profesiones.GetByIdAsync(id) is null)
         {

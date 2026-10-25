@@ -96,7 +96,7 @@ public class PersonaController : Controller
     // POST: /Persona/Edit/{cc}
     [HttpPost, ActionName("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditPost(int? id)
+    public async Task<IActionResult> EditPost([FromRoute] int? id)
     {
         if (id is null)
         {
@@ -148,7 +148,7 @@ public class PersonaController : Controller
     // POST: /Persona/Delete/{cc}
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed([FromRoute] int id)
     {
         if (await _personas.GetByIdAsync(id) is null)
         {

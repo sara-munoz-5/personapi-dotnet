@@ -97,7 +97,7 @@ public class EstudioController : Controller
     // POST: /Estudio/Edit?idProf=&ccPer=
     [HttpPost, ActionName("Edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditPost(int? idProf, int? ccPer)
+    public async Task<IActionResult> EditPost([FromQuery] int? idProf, [FromQuery] int? ccPer)
     {
         var estudio = await BuscarAsync(idProf, ccPer);
         if (estudio is null)
@@ -138,7 +138,7 @@ public class EstudioController : Controller
     // POST: /Estudio/Delete?idProf=&ccPer=
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int idProf, int ccPer)
+    public async Task<IActionResult> DeleteConfirmed([FromQuery] int idProf, [FromQuery] int ccPer)
     {
         if (await _estudios.GetByIdAsync(idProf, ccPer) is null)
         {
