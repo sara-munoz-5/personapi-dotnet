@@ -1,5 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using personapi_dotnet.Interfaces;
@@ -26,7 +28,27 @@ builder.Services.AddControllersWithViews(options =>
 // Las navegaciones (Persona.Estudios -> Estudio.CcPerNavigation -> ...) forman ciclos;
 // se cortan al serializar para que la API devuelva las entidades sin bucles infinitos.
 .AddJsonOptions(options =>
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+// Títulos de los errores de la API en español: el 400 automático de [ApiController]
+// (validaciones de Models/Metadata) y los ProblemDetails de NotFound()
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.ClientErrorMapping[StatusCodes.Status400BadRequest].Title = "Solicitud inválida.";
+    options.ClientErrorMapping[StatusCodes.Status404NotFound].Title = "No se encontró el registro.";
+    options.ClientErrorMapping[StatusCodes.Status409Conflict].Title = "Conflicto con los datos existentes.";
+
+    options.InvalidModelStateResponseFactory = contexto =>
+    {
+        var problema = contexto.HttpContext.RequestServices
+            .GetRequiredService<ProblemDetailsFactory>()
+            .CreateValidationProblemDetails(contexto.HttpContext, contexto.ModelState,
+                StatusCodes.Status400BadRequest, "Uno o más datos no son válidos.");
+        return new BadRequestObjectResult(problema)
+        {
+            ContentTypes = { "application/problem+json", "application/problem+xml" }
+        };
+    };
+});
 
 // Swagger con Swashbuckle: documento OpenAPI 3.0 y comentarios XML de los controladores API
 builder.Services.AddEndpointsApiExplorer();
