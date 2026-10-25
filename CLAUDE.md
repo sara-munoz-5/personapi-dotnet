@@ -59,6 +59,14 @@ Fuente de verdad: `docs/Laboratorio1_personapi-dotnet_Investigacion_completa.pdf
 - Conventional Commits en español (`feat(mvc): agrega CRUD de personas`); no subir `bin`, `obj` ni `.vs`.
 - Cambiar una interfaz DAO exige avisar a los otros dos integrantes.
 
+### Paso pendiente: pruebas de integración API + MVC
+- **Cuándo:** cuando la base, `feature/api-rest` y `feature/mvc` ya estén en `main` (después de sus pull requests).
+- **Qué:** crear la rama `test/integracion-api-mvc` desde `main` y aplicar con `git cherry-pick 839e5cc`
+  el commit "test: agrega pruebas de integración entre la API y la interfaz MVC".
+- **Contenido:** `tests/PersonApi.Tests/Integracion/IntegracionTests.cs`, que completa los casos 14 y 15 de la Tabla 21.
+  Son 3 pruebas que solo pasan con la API y la interfaz MVC juntas.
+- **De dónde sale el commit:** vive solo en la rama local `integracion/revision`, que no se sube; no la borres antes de hacer el cherry-pick.
+
 ## Convenciones
 - Comentarios y textos visibles en español.
 - Compilar: `dotnet build personapi-dotnet.sln` (0 advertencias). Probar: `dotnet test personapi-dotnet.sln`.
