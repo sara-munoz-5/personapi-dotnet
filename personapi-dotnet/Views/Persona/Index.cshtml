@@ -1,0 +1,48 @@
+@model List<Persona>
+@{
+    ViewData["Title"] = "Personas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Personas</h1>
+    <a asp-action="Create" class="btn btn-primary">Nueva persona</a>
+</div>
+
+<partial name="_Mensajes" />
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted">No hay personas registradas.</p>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Género</th>
+                <th>Edad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var persona in Model)
+            {
+                <tr>
+                    <td>@persona.Cc</td>
+                    <td>@persona.Nombre</td>
+                    <td>@persona.Apellido</td>
+                    <td>@Generos.Texto(persona.Genero)</td>
+                    <td>@persona.Edad</td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Details" asp-route-id="@persona.Cc" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@persona.Cc" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@persona.Cc" class="btn btn-sm btn-outline-danger">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
