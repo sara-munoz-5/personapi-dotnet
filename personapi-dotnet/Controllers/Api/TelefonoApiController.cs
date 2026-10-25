@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Interfaces;
 using personapi_dotnet.Models.Entities;
 
@@ -49,7 +50,7 @@ public class TelefonoApiController : ControllerBase
     /// <param name="telefono">Datos del teléfono; duenio es la cédula de una persona existente.</param>
     /// <response code="201">Teléfono creado; el encabezado Location apunta a él.</response>
     /// <response code="400">Datos inválidos.</response>
-    /// <response code="409">Ya existe un teléfono con ese número.</response>
+    /// <response code="409">Ya existe un teléfono con ese número, o el dueño no existe.</response>
     [HttpPost]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Telefono), StatusCodes.Status201Created)]
@@ -66,10 +67,10 @@ public class TelefonoApiController : ControllerBase
         {
             await _telefonos.AddAsync(telefono);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException ex)
         {
-            // El repositorio lanza error si la llave quedó repetida entre la consulta y el guardado
-            return Problem(statusCode: StatusCodes.Status409Conflict, title: "El número de teléfono ya existe.", detail: ex.Message);
+            // EF Core lanza DbUpdateException si la llave quedó repetida entre la consulta y el guardado, o si el dueño no existe
+            return Problem(statusCode: StatusCodes.Status409Conflict, title: "No se pudo guardar el teléfono: el número ya existe o el dueño no existe.", detail: ex.Message);
         }
 
         return CreatedAtAction(nameof(GetById), new { num = telefono.Num }, telefono);
@@ -81,11 +82,13 @@ public class TelefonoApiController : ControllerBase
     /// <response code="204">Teléfono actualizado.</response>
     /// <response code="400">El número de la URL no coincide con el del cuerpo, o datos inválidos.</response>
     /// <response code="404">No existe un teléfono con ese número.</response>
+    /// <response code="409">El nuevo dueño no existe.</response>
     [HttpPut("{num}")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Update(string num, Telefono telefono)
     {
         if (num != telefono.Num)
@@ -97,7 +100,16 @@ public class TelefonoApiController : ControllerBase
             return NotFound();
         }
 
-        await _telefonos.UpdateAsync(telefono);
+        try
+        {
+            await _telefonos.UpdateAsync(telefono);
+        }
+        catch (DbUpdateException ex)
+        {
+            // Al cambiar de dueño, EF Core lanza DbUpdateException si la nueva persona no existe
+            return Problem(statusCode: StatusCodes.Status409Conflict, title: "No se pudo guardar el teléfono: el dueño no existe.", detail: ex.Message);
+        }
+
         return NoContent();
     }
 

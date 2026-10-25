@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Interfaces;
 using personapi_dotnet.Models.Entities;
 
@@ -50,7 +51,7 @@ public class EstudioApiController : ControllerBase
     /// <param name="estudio">Datos del estudio; idProf y ccPer deben existir.</param>
     /// <response code="201">Estudio creado; el encabezado Location apunta a él.</response>
     /// <response code="400">Datos inválidos.</response>
-    /// <response code="409">Esa persona ya tiene registrada esa profesión.</response>
+    /// <response code="409">Esa persona ya tiene registrada esa profesión, o la persona o la profesión no existen.</response>
     [HttpPost]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(Estudio), StatusCodes.Status201Created)]
@@ -67,10 +68,10 @@ public class EstudioApiController : ControllerBase
         {
             await _estudios.AddAsync(estudio);
         }
-        catch (Exception ex) when (ex is not NotImplementedException)
+        catch (DbUpdateException ex)
         {
-            // El repositorio lanza error si la llave quedó repetida entre la consulta y el guardado
-            return Problem(statusCode: StatusCodes.Status409Conflict, title: "Esta persona ya tiene registrada esa profesión.", detail: ex.Message);
+            // EF Core lanza DbUpdateException si la llave quedó repetida entre la consulta y el guardado, o si la persona o la profesión no existen
+            return Problem(statusCode: StatusCodes.Status409Conflict, title: "No se pudo guardar el estudio: la llave ya existe o la persona o la profesión no existen.", detail: ex.Message);
         }
 
         return CreatedAtAction(nameof(GetById), new { idProf = estudio.IdProf, ccPer = estudio.CcPer }, estudio);
