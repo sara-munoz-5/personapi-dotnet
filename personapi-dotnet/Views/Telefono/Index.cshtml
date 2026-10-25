@@ -1,0 +1,44 @@
+@model List<Telefono>
+@{
+    ViewData["Title"] = "Teléfonos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Teléfonos</h1>
+    <a asp-action="Create" class="btn btn-primary">Nuevo teléfono</a>
+</div>
+
+<partial name="_Mensajes" />
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted">No hay teléfonos registrados.</p>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Operador</th>
+                <th>Dueño</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var telefono in Model)
+            {
+                <tr>
+                    <td>@telefono.Num</td>
+                    <td>@telefono.Oper</td>
+                    <td>@telefono.DuenioNavigation?.Nombre @telefono.DuenioNavigation?.Apellido</td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Details" asp-route-id="@telefono.Num" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@telefono.Num" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@telefono.Num" class="btn btn-sm btn-outline-danger">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
