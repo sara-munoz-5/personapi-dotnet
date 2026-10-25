@@ -1,0 +1,22 @@
+@model Estudio
+@{
+    ViewData["Title"] = "Detalle de estudio";
+}
+
+<h1>Detalle de estudio</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Persona</dt>
+    <dd class="col-sm-9">@Model.CcPerNavigation?.Nombre @Model.CcPerNavigation?.Apellido (cédula @Model.CcPer)</dd>
+    <dt class="col-sm-3">Profesión</dt>
+    <dd class="col-sm-9">@Model.IdProfNavigation?.Nom</dd>
+    <dt class="col-sm-3">Universidad</dt>
+    <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Univer) ? "Sin dato" : Model.Univer)</dd>
+    <dt class="col-sm-3">Fecha</dt>
+    <dd class="col-sm-9">@(Model.Fecha?.ToString("dd/MM/yyyy") ?? "Sin dato")</dd>
+</dl>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-idProf="@Model.IdProf" asp-route-ccPer="@Model.CcPer" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+</div>

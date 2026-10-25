@@ -1,0 +1,46 @@
+@model List<Estudio>
+@{
+    ViewData["Title"] = "Estudios";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Estudios</h1>
+    <a asp-action="Create" class="btn btn-primary">Nuevo estudio</a>
+</div>
+
+<partial name="_Mensajes" />
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted">No hay estudios registrados.</p>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Persona</th>
+                <th>Profesión</th>
+                <th>Universidad</th>
+                <th>Fecha</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var estudio in Model)
+            {
+                <tr>
+                    <td>@estudio.CcPerNavigation?.Nombre @estudio.CcPerNavigation?.Apellido</td>
+                    <td>@estudio.IdProfNavigation?.Nom</td>
+                    <td>@estudio.Univer</td>
+                    <td>@estudio.Fecha?.ToString("dd/MM/yyyy")</td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Details" asp-route-idProf="@estudio.IdProf" asp-route-ccPer="@estudio.CcPer" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                        <a asp-action="Edit" asp-route-idProf="@estudio.IdProf" asp-route-ccPer="@estudio.CcPer" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <a asp-action="Delete" asp-route-idProf="@estudio.IdProf" asp-route-ccPer="@estudio.CcPer" class="btn btn-sm btn-outline-danger">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

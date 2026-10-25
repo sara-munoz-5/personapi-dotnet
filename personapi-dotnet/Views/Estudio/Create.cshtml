@@ -1,0 +1,46 @@
+@model personapi_dotnet.ViewModels.EstudioFormViewModel
+@{
+    ViewData["Title"] = "Nuevo estudio";
+}
+
+<h1>Nuevo estudio</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Estudio.CcPer" class="form-label"></label>
+                <select asp-for="Estudio.CcPer" asp-items="Model.Personas" class="form-select">
+                    <option value="">-- Seleccione una persona --</option>
+                </select>
+                <span asp-validation-for="Estudio.CcPer" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Estudio.IdProf" class="form-label"></label>
+                <select asp-for="Estudio.IdProf" asp-items="Model.Profesiones" class="form-select">
+                    <option value="">-- Seleccione una profesión --</option>
+                </select>
+                <span asp-validation-for="Estudio.IdProf" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Estudio.Univer" class="form-label"></label>
+                <input asp-for="Estudio.Univer" class="form-control" />
+                <span asp-validation-for="Estudio.Univer" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Estudio.Fecha" class="form-label"></label>
+                <input asp-for="Estudio.Fecha" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+                <span asp-validation-for="Estudio.Fecha" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
