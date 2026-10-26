@@ -1,0 +1,53 @@
+@model personapi_dotnet.Models.ViewModels.Persona.PersonaListarViewModel
+@{
+    ViewData["Title"] = "Personas";
+}
+
+<h1>Personas</h1>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-success" role="status">@Model.Mensaje</div>
+}
+
+<p>
+    <a class="btn btn-primary" asp-controller="PersonaCrear" asp-action="Crear">Nueva persona</a>
+    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Volver al inicio</a>
+</p>
+
+@if (Model.Personas.Count == 0)
+{
+    <div class="alert alert-info">No hay personas registradas.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th scope="col">Cédula</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Género</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Personas)
+            {
+                <tr>
+                    <td>@p.Cc</td>
+                    <td>@p.Nombre</td>
+                    <td>@p.Apellido</td>
+                    <td>@p.Genero</td>
+                    <td>@p.Edad</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-info" asp-controller="PersonaDetalle" asp-action="Detalle" asp-route-cc="@p.Cc">Detalle</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-controller="PersonaEditar" asp-action="Editar" asp-route-cc="@p.Cc">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-controller="PersonaEliminar" asp-action="Eliminar" asp-route-cc="@p.Cc">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

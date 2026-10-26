@@ -1,0 +1,78 @@
+@model personapi_dotnet.Models.ViewModels.Persona.PersonaDetalleViewModel
+@{
+    ViewData["Title"] = "Detalle de la persona";
+}
+
+<h1>Detalle de la persona</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Cédula</dt>
+    <dd class="col-sm-9">@Model.Cc</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre</dd>
+    <dt class="col-sm-3">Apellido</dt>
+    <dd class="col-sm-9">@Model.Apellido</dd>
+    <dt class="col-sm-3">Género</dt>
+    <dd class="col-sm-9">@Model.Genero</dd>
+    <dt class="col-sm-3">Edad</dt>
+    <dd class="col-sm-9">@Model.Edad</dd>
+</dl>
+
+<h2 class="h4">Estudios</h2>
+@if (Model.Estudios.Count == 0)
+{
+    <p class="text-muted">La persona no tiene estudios registrados.</p>
+}
+else
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Profesión</th>
+                <th scope="col">Universidad</th>
+                <th scope="col">Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Estudios)
+            {
+                <tr>
+                    <td><a asp-controller="EstudiosDetalle" asp-action="Detalle" asp-route-idProf="@e.IdProf" asp-route-ccPer="@Model.Cc">@e.Profesion</a></td>
+                    <td>@(e.Univer ?? "—")</td>
+                    <td>@(e.Fecha?.ToString("dd/MM/yyyy") ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h2 class="h4">Teléfonos</h2>
+@if (Model.Telefonos.Count == 0)
+{
+    <p class="text-muted">La persona no tiene teléfonos registrados.</p>
+}
+else
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Número</th>
+                <th scope="col">Operador</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.Telefonos)
+            {
+                <tr>
+                    <td><a asp-controller="TelefonoDetalle" asp-action="Detalle" asp-route-num="@t.Num">@t.Num</a></td>
+                    <td>@t.Oper</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<p>
+    <a class="btn btn-primary" asp-controller="PersonaEditar" asp-action="Editar" asp-route-cc="@Model.Cc">Editar</a>
+    <a class="btn btn-secondary" asp-controller="PersonaListar" asp-action="Listar">Volver</a>
+</p>

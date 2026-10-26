@@ -1,0 +1,24 @@
+@model personapi_dotnet.Models.ViewModels.Estudios.EstudiosEliminarViewModel
+@{
+    ViewData["Title"] = "Eliminar estudio";
+}
+
+<h1>Eliminar estudio</h1>
+
+<div class="alert alert-warning">¿Seguro que desea eliminar este estudio? Esta acción no se puede deshacer.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Persona</dt>
+    <dd class="col-sm-9">@Model.Persona (cédula @Model.CcPer)</dd>
+    <dt class="col-sm-3">Profesión</dt>
+    <dd class="col-sm-9">@Model.Profesion (id @Model.IdProf)</dd>
+    <dt class="col-sm-3">Universidad</dt>
+    <dd class="col-sm-9">@(Model.Univer ?? "—")</dd>
+    <dt class="col-sm-3">Fecha</dt>
+    <dd class="col-sm-9">@(Model.Fecha?.ToString("dd/MM/yyyy") ?? "—")</dd>
+</dl>
+
+<form asp-controller="EstudiosEliminar" asp-action="Eliminar" asp-route-idProf="@Model.IdProf" asp-route-ccPer="@Model.CcPer" method="post">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" asp-controller="EstudiosListar" asp-action="Listar">Volver</a>
+</form>

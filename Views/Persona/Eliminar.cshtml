@@ -1,0 +1,34 @@
+@model personapi_dotnet.Models.ViewModels.Persona.PersonaEliminarViewModel
+@{
+    ViewData["Title"] = "Eliminar persona";
+}
+
+<h1>Eliminar persona</h1>
+
+@if (ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-warning">¿Seguro que desea eliminar esta persona? Esta acción no se puede deshacer.</div>
+}
+else
+{
+    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Cédula</dt>
+    <dd class="col-sm-9">@Model.Cc</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre @Model.Apellido</dd>
+    <dt class="col-sm-3">Género</dt>
+    <dd class="col-sm-9">@Model.Genero</dd>
+    <dt class="col-sm-3">Edad</dt>
+    <dd class="col-sm-9">@Model.Edad</dd>
+</dl>
+
+<form asp-controller="PersonaEliminar" asp-action="Eliminar" asp-route-cc="@Model.Cc" method="post">
+    @if (ViewData.ModelState.IsValid)
+    {
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    }
+    <a class="btn btn-secondary" asp-controller="PersonaListar" asp-action="Listar">Volver</a>
+</form>

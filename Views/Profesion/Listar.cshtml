@@ -1,0 +1,49 @@
+@model personapi_dotnet.Models.ViewModels.Profesion.ProfesionListarViewModel
+@{
+    ViewData["Title"] = "Profesiones";
+}
+
+<h1>Profesiones</h1>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-success" role="status">@Model.Mensaje</div>
+}
+
+<p>
+    <a class="btn btn-primary" asp-controller="ProfesionCrear" asp-action="Crear">Nueva profesión</a>
+    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Volver al inicio</a>
+</p>
+
+@if (Model.Profesiones.Count == 0)
+{
+    <div class="alert alert-info">No hay profesiones registradas.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Profesiones)
+            {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.Nom</td>
+                    <td>@(p.Des ?? "—")</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-info" asp-controller="ProfesionDetalle" asp-action="Detalle" asp-route-id="@p.Id">Detalle</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-controller="ProfesionEditar" asp-action="Editar" asp-route-id="@p.Id">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-controller="ProfesionEliminar" asp-action="Eliminar" asp-route-id="@p.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

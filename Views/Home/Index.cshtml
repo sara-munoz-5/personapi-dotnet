@@ -1,8 +1,47 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-5">personapi-dotnet</h1>
+    <p class="lead">Registro de personas, profesiones, estudios y teléfonos.</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="card-title h5">Personas</h2>
+                <p class="card-text">Cédula, nombre, apellido, género y edad.</p>
+                <a class="btn btn-primary" asp-controller="PersonaListar" asp-action="Listar">Ver personas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="card-title h5">Profesiones</h2>
+                <p class="card-text">Nombre y descripción de cada profesión.</p>
+                <a class="btn btn-primary" asp-controller="ProfesionListar" asp-action="Listar">Ver profesiones</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="card-title h5">Estudios</h2>
+                <p class="card-text">Qué profesión estudió cada persona, dónde y cuándo.</p>
+                <a class="btn btn-primary" asp-controller="EstudiosListar" asp-action="Listar">Ver estudios</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="card-title h5">Teléfonos</h2>
+                <p class="card-text">Número, operador y dueño de cada teléfono.</p>
+                <a class="btn btn-primary" asp-controller="TelefonoListar" asp-action="Listar">Ver teléfonos</a>
+            </div>
+        </div>
+    </div>
 </div>
