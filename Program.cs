@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Models.EntitiesGeneradas;
+using personapi_dotnet.Controllers.Repositories.Interfaces;
+using personapi_dotnet.Controllers.Repositories.Implementations;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PersonaDbContext>(options =>
     options.UseSqlServer(
@@ -10,6 +12,10 @@ builder.Services.AddDbContext<PersonaDbContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IPersonaDAO, PersonaDAO>();
+builder.Services.AddScoped<IProfesionDAO, ProfesionDAO>();
+builder.Services.AddScoped<IEstudiosDAO, EstudiosDAO>();
+builder.Services.AddScoped<ITelefonoDAO, TelefonoDAO>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
