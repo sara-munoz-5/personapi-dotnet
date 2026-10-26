@@ -1,0 +1,20 @@
+﻿# Archivos temporales de Visual Studio
+.vs/
+*.user
+*.suo
+*.rsuser
+
+# Archivos generados al compilar
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Configuraciones locales
+.env
+.env.*
+appsettings.Local.json
