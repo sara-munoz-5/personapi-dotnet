@@ -65,6 +65,27 @@ Los controladores siguen la convención del contrato:
 Los errores `404`, `409` y `500` se devuelven como `ProblemDetails`. Los errores de validación producidos por
 `[ApiController]` se devuelven como `ValidationProblemDetails`.
 
+Todos los textos de error están en español:
+
+- los mensajes de validación de los DTO;
+- el título de la respuesta 400;
+- los errores de JSON mal formado o de tipo incorrecto: `RespuestaValidacionApi` reemplaza el mensaje técnico del
+  lector JSON por uno en español y quita el error duplicado del parámetro del cuerpo.
+
+Ejemplo de validación:
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "Uno o más datos no son válidos.",
+  "status": 400,
+  "errors": {
+    "Edad": ["La edad debe estar entre 0 y 130."],
+    "cc": ["El JSON no es válido o el valor de 'cc' no tiene el tipo esperado."]
+  }
+}
+```
+
 Ejemplo de conflicto:
 
 ```json

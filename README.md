@@ -46,7 +46,7 @@ La aplicación MVC estará disponible en la dirección mostrada por ASP.NET Core
 
 ## Estructura principal
 
-- `Models/Entities`: entidades generadas y `PersonaDbContext`.
+- `Models/Entities`: entidades generadas y `PersonaDbContext` (namespace `personapi_dotnet.Models.EntitiesGeneradas`).
 - `Models/DTOs`: contratos de entrada y salida de los servicios y la API.
 - `Controllers/Repositories`: interfaces e implementaciones DAO con EF Core.
 - `Controllers/Services`: reglas de negocio y mapeo entre entidades y DTO.

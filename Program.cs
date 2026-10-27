@@ -5,6 +5,7 @@ using personapi_dotnet.Controllers.Repositories.Interfaces;
 using personapi_dotnet.Controllers.Repositories.Implementations;
 using personapi_dotnet.Controllers.Services.Interfaces;
 using personapi_dotnet.Controllers.Services.Implementations;
+using personapi_dotnet.Controllers.ApiControllers;
 using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PersonaDbContext>(options =>
@@ -14,7 +15,33 @@ builder.Services.AddDbContext<PersonaDbContext>(options =>
 );
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    // Mensajes del enlace de modelos en español (formularios MVC, ruta, query y cuerpo vacío de la API).
+    var mensajes = options.ModelBindingMessageProvider;
+    mensajes.SetAttemptedValueIsInvalidAccessor((valor, campo) => $"El valor '{valor}' no es válido para {campo}.");
+    mensajes.SetNonPropertyAttemptedValueIsInvalidAccessor(valor => $"El valor '{valor}' no es válido.");
+    mensajes.SetUnknownValueIsInvalidAccessor(campo => $"El valor no es válido para {campo}.");
+    mensajes.SetNonPropertyUnknownValueIsInvalidAccessor(() => "El valor no es válido.");
+    mensajes.SetValueIsInvalidAccessor(valor => $"El valor '{valor}' no es válido.");
+    mensajes.SetValueMustBeANumberAccessor(campo => $"El campo {campo} debe ser un número.");
+    mensajes.SetNonPropertyValueMustBeANumberAccessor(() => "El campo debe ser un número.");
+    mensajes.SetValueMustNotBeNullAccessor(valor => $"El valor '{valor}' no es válido.");
+    mensajes.SetMissingBindRequiredValueAccessor(campo => $"Falta un valor para {campo}.");
+    mensajes.SetMissingKeyOrValueAccessor(() => "Falta un valor.");
+    mensajes.SetMissingRequestBodyRequiredValueAccessor(() => "Se requiere un cuerpo JSON válido.");
+})
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = RespuestaValidacionApi.Crear;
+    options.ClientErrorMapping[StatusCodes.Status400BadRequest].Title = "Solicitud no válida.";
+    options.ClientErrorMapping[StatusCodes.Status404NotFound].Title = "Recurso no encontrado";
+    options.ClientErrorMapping[StatusCodes.Status405MethodNotAllowed].Title = "Método no permitido.";
+    options.ClientErrorMapping[StatusCodes.Status406NotAcceptable].Title = "Formato de respuesta no admitido.";
+    options.ClientErrorMapping[StatusCodes.Status409Conflict].Title = "Conflicto de negocio";
+    options.ClientErrorMapping[StatusCodes.Status415UnsupportedMediaType].Title = "Tipo de contenido no admitido.";
+    options.ClientErrorMapping[StatusCodes.Status500InternalServerError].Title = "Error interno del servidor.";
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
