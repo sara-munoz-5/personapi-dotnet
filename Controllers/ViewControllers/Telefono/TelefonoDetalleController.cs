@@ -5,6 +5,7 @@ using personapi_dotnet.Models.ViewModels.Telefono;
 namespace personapi_dotnet.Controllers.ViewControllers.Telefono
 {
     /// <summary>Controller View de Views/Telefono/Detalle.cshtml.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class TelefonoDetalleController : Controller
     {
         private readonly ITelefonoService _telefonos;

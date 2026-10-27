@@ -10,6 +10,7 @@ namespace personapi_dotnet.Controllers.ViewControllers.Estudios
     /// Controller View de Views/Estudios/Editar.cshtml. Las dos partes de la llave salen de la URL
     /// y no se modifican; solo cambian fecha y universidad (contratos §4.3).
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class EstudiosEditarController : Controller
     {
         private readonly IEstudiosService _estudios;

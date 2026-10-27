@@ -6,6 +6,7 @@ using personapi_dotnet.Models.ViewModels.Profesion;
 namespace personapi_dotnet.Controllers.ViewControllers.Profesion
 {
     /// <summary>Controller View de Views/Profesion/Editar.cshtml. El id sale de la URL, nunca del formulario.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class ProfesionEditarController : Controller
     {
         private readonly IProfesionService _profesiones;

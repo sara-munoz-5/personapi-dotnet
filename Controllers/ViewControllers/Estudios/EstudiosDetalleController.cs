@@ -5,6 +5,7 @@ using personapi_dotnet.Models.ViewModels.Estudios;
 namespace personapi_dotnet.Controllers.ViewControllers.Estudios
 {
     /// <summary>Controller View de Views/Estudios/Detalle.cshtml (llave compuesta en la URL).</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class EstudiosDetalleController : Controller
     {
         private readonly IEstudiosService _estudios;

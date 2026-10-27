@@ -8,6 +8,7 @@ namespace personapi_dotnet.Controllers.ViewControllers.Estudios
     /// Controller View de Views/Estudios/Listar.cshtml. Usa los servicios de persona y profesión
     /// para mostrar nombres en lugar de las llaves.
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class EstudiosListarController : Controller
     {
         private readonly IEstudiosService _estudios;

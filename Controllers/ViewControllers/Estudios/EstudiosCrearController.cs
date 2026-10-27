@@ -7,6 +7,7 @@ using personapi_dotnet.Models.ViewModels.Estudios;
 namespace personapi_dotnet.Controllers.ViewControllers.Estudios
 {
     /// <summary>Controller View de Views/Estudios/Crear.cshtml. Persona y profesión se eligen de listas.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class EstudiosCrearController : Controller
     {
         private readonly IEstudiosService _estudios;

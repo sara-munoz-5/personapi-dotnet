@@ -6,6 +6,7 @@ using personapi_dotnet.Models.ViewModels.Persona;
 namespace personapi_dotnet.Controllers.ViewControllers.Persona
 {
     /// <summary>Controller View de Views/Persona/Crear.cshtml (GET formulario, POST crear).</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class PersonaCrearController : Controller
     {
         private readonly IPersonaService _personas;

@@ -5,6 +5,7 @@ using personapi_dotnet.Models.ViewModels.Profesion;
 namespace personapi_dotnet.Controllers.ViewControllers.Profesion
 {
     /// <summary>Controller View de Views/Profesion/Listar.cshtml.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class ProfesionListarController : Controller
     {
         private readonly IProfesionService _profesiones;

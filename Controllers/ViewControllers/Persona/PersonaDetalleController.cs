@@ -8,6 +8,7 @@ namespace personapi_dotnet.Controllers.ViewControllers.Persona
     /// Controller View de Views/Persona/Detalle.cshtml. Los DTO no traen navegaciones (contratos §5),
     /// así que los estudios y teléfonos de la persona se piden a sus propios servicios.
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class PersonaDetalleController : Controller
     {
         private readonly IPersonaService _personas;
