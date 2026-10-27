@@ -129,6 +129,8 @@ o carpetas, manda la estructura de `main`; para reglas, validaciones, flujo y bo
        o.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((v, c) => $"El valor '{v}' no es válido para {c}.");
        o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(c => $"El campo {c} debe ser un número.");
        o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(v => $"El valor '{v}' no es válido.");
+       o.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(c => $"Falta un valor para {c}.");
+       o.ModelBindingMessageProvider.SetValueIsInvalidAccessor(v => $"El valor '{v}' no es válido.");
    });
    ```
 
@@ -146,12 +148,16 @@ o carpetas, manda la estructura de `main`; para reglas, validaciones, flujo y bo
 
 ### Commits (`git log --oneline main..feature/view-mvc`)
 
+Los contratos se separaron en su propia rama (sección 8): `feature/contratos-service` tiene solo el primer commit
+y `feature/view-mvc` se rebasó encima, así que las dos comparten exactamente el mismo commit `8a22a41`.
+
 ```text
-docs(mvc): documenta vistas, ViewModels y pruebas del integrante 3   ← este commit
-c74a2b2 feat(mvc): agrega vistas Razor del CRUD y navegación
-4913b07 feat(mvc): agrega controladores de vista por pantalla
-d76690a feat(mvc): agrega ViewModels por vista
-930feab feat(contratos): agrega interfaces de Service y DTO para las vistas
+docs(mvc): agrega los textos de los pull requests                    ← este commit
+9bbc8e8 docs(mvc): documenta vistas, ViewModels y pruebas del integrante 3
+3e51d1c feat(mvc): agrega vistas Razor del CRUD y navegación
+570205d feat(mvc): agrega controladores de vista por pantalla
+da9f4c9 feat(mvc): agrega ViewModels por vista
+8a22a41 feat(contratos): agrega interfaces de Service y DTO para las vistas   ← también en feature/contratos-service
 ```
 
 No hubo commits `fix(mvc)`: la prueba de humo no encontró fallas en la aplicación (la única comprobación que falló
@@ -222,17 +228,156 @@ Sin cambios: `Program.cs`, `.csproj`, `appsettings*.json`, `Models/Entities/`, `
 | Integrante 1 | Entidades, DAO, `Database/` | Ninguno: esta rama no los toca y los Controller View no usan entidades | Si cambia un tipo (por ejemplo `edad` a nulo), lo absorbe el DTO del integrante 2 |
 | Ambos | Orden de merge | Si esta rama entra antes que los servicios, `main` compila pero las vistas dan 500 | Fusionar después (o junto) con la rama del integrante 2 |
 
-### Pasos para el push y el pull request (NO ejecutados)
+### Push y pull requests
 
-```bash
-git checkout feature/view-mvc
-git log --oneline main..feature/view-mvc          # revisar los 5 commits
-dotnet build personapi-dotnet.csproj               # 0 advertencias, 0 errores
-git push -u origin feature/view-mvc
-gh pr create --base main --head feature/view-mvc \
-  --title "feat(mvc): vistas, ViewModels y Controller View del integrante 3" \
-  --body-file docs/decisiones-mvc.md
-```
+Ya se hizo push de las dos ramas (`git push -u origin feature/contratos-service` y
+`git push -u origin feature/view-mvc`). Los pull requests **no** se abrieron: se crean desde GitHub (o con `gh pr create`)
+copiando el título y la descripción de la sección 8. Antes de fusionar, otro integrante revisa cada pull request
+(contratos §9).
 
-Antes de fusionar: que el integrante 2 apruebe las interfaces y los DTO (sección 2) y que otro integrante revise el
-pull request (contratos §9).
+## 8. Textos de los pull requests
+
+**Orden de fusión:** PR 1 → servicios del integrante 2 (registrados en `Program.cs`) → PR 2.
+
+`feature/view-mvc` contiene el mismo commit `8a22a41` de `feature/contratos-service`. Mientras el PR 1 no entre,
+el PR 2 también muestra ese commit; cuando el PR 1 se fusione con *Create a merge commit*, el PR 2 queda solo con
+sus commits. Si el PR 1 se fusiona con *Squash* o *Rebase*, `git rebase origin/main` en `feature/view-mvc` descarta
+el commit repetido sin conflictos, porque el contenido es idéntico.
+
+### PR 1 — `feature/contratos-service` → `main`
+
+**Título:** `feat(contratos): interfaces de Service y DTO (propuesta del integrante 3)`
+
+**Revisa y aprueba:** integrante 2, **antes** de implementar sus Services.
+
+**Descripción:**
+
+> **Qué es.** Propuesta de las interfaces de Service y los DTO del contrato §4B, para que el integrante 2 implemente
+> sus servicios y el integrante 3 construya las vistas sobre las mismas firmas. Solo trae contratos: no hay
+> implementaciones, no toca `Program.cs` y compila con 0 advertencias y 0 errores. Todos los archivos empiezan con
+> `// PROPUESTA del integrante 3 según contratos §4B; pendiente de aprobación del integrante 2`.
+>
+> **Archivos (10).**
+> - `Controllers/Services/Interfaces/I{Persona,Profesion,Estudios,Telefono}Service.cs`: estaban vacíos.
+> - `Controllers/Services/Interfaces/ConflictoNegocioException.cs`: nuevo.
+> - `Models/DTOs/{Persona,Profesion,Estudios,Telefono}Dto.cs`: estaban vacíos.
+> - `docs/decisiones-mvc.md`: estado de `main` y explicación de la propuesta.
+>
+> **Firmas.** Las cinco operaciones de `IPersonaService` del contrato, iguales en las cuatro entidades:
+>
+> ```csharp
+> Task<List<PersonaDto>> ObtenerTodosAsync();
+> Task<PersonaDto?> ObtenerPorIdAsync(int cc);                       // null si no existe
+> Task<PersonaDto> CrearAsync(PersonaCrearDto dto);                  // ConflictoNegocioException
+> Task<bool> ActualizarAsync(int cc, PersonaActualizarDto dto);      // false si no existe
+> Task<bool> EliminarAsync(int cc);                                  // false si no existe
+> ```
+>
+> | Servicio | Llave en Obtener, Actualizar y Eliminar |
+> |---|---|
+> | `IPersonaService` | `int cc` |
+> | `IProfesionService` | `int id` |
+> | `IEstudiosService` | `int idProf, int ccPer` (PK compuesta) |
+> | `ITelefonoService` | `string num` |
+>
+> **DTO.** Un archivo por entidad con tres clases: respuesta, crear y actualizar. Solo campos de la tabla, sin
+> navegaciones (§5). Los de actualizar llevan solo los campos editables (§5.2); la llave viaja en la ruta.
+>
+> | Entidad | Respuesta y crear | Actualizar |
+> |---|---|---|
+> | Persona | `Cc`, `Nombre`, `Apellido`, `Genero` (`"M"`/`"F"`), `Edad` | `Nombre`, `Apellido`, `Genero`, `Edad` |
+> | Profesión | `Id`, `Nom`, `Des?` | `Nom`, `Des?` |
+> | Estudios | `IdProf`, `CcPer`, `Fecha?` (`DateOnly`), `Univer?` | `Fecha?`, `Univer?` |
+> | Teléfono | `Num`, `Oper`, `Duenio` | `Oper`, `Duenio` |
+>
+> `ProfesionCrearDto` incluye `Id` porque `profesion.id` no es IDENTITY en la tabla real.
+>
+> **Mecanismo de errores.**
+> - **No existe:** no es un error. Las consultas devuelven `null`, y actualizar o eliminar devuelven `false`.
+> - **Errores de negocio:** se lanza una sola excepción, `ConflictoNegocioException`, con una propiedad `Tipo`:
+>
+>   | `TipoConflicto` | Cuándo |
+>   |---|---|
+>   | `LlaveDuplicada` | La cédula, el id de profesión, el número o la combinación `(idProf, ccPer)` ya existen |
+>   | `ReferenciaInexistente` | No existen la persona o la profesión de un estudio, o el dueño de un teléfono (crear y editar) |
+>   | `BorradoConReferencias` | Persona con estudios o teléfonos, o profesión con estudios (las FK son NO ACTION) |
+>
+> - **Conversión en los controladores:** los Controller View la convierten en un mensaje de `ModelState` y los API
+>   Controller, en 409.
+> - **Por qué una excepción:** se eligió una excepción y no un resultado tipado porque conserva sin cambios las
+>   firmas `Task<Dto>` y `Task<bool>` del contrato.
+> - **Lo que no debe salir del servicio:** `DbUpdateException` ni excepciones de SQL.
+>
+> **Qué pido al integrante 2.**
+> 1. Aprobar estos archivos tal cual o pedir cambios en este PR, no en su rama. Así evitamos conflictos, porque los
+>    dos partíamos de archivos vacíos.
+> 2. Al implementar:
+>    - traducir los errores de la base a `ConflictoNegocioException`;
+>    - convertir `telefono.oper` nulo en `""`;
+>    - registrar los cuatro servicios en `Program.cs` con `AddScoped`.
+> 3. Opcional: agregar `ObtenerPorPersonaAsync(int cc)` en estudios y teléfonos.
+
+### PR 2 — `feature/view-mvc` → `main`
+
+**Título:** `feat(mvc): vistas, ViewModels y Controller View del integrante 3`
+
+**Se fusiona:** **después** del PR 1 y de los Services del integrante 2.
+
+**Descripción:**
+
+> **Qué es.** La interfaz web del contrato §6:
+> - 20 ViewModels, 20 Controller View y 20 vistas Razor (Listar, Detalle, Crear, Editar y Eliminar de las cuatro
+>   entidades);
+> - menú en español en `_Layout.cshtml`, con enlace a `/swagger`;
+> - accesos a las cuatro listas en el inicio.
+>
+> Está construida sobre las interfaces del PR 1, y su primer commit es ese mismo PR.
+>
+> **⚠️ No fusionar todavía.** Hasta que el integrante 2 implemente los servicios y los registre en `Program.cs`,
+> `main` compila pero **todas las vistas de las cuatro entidades responden 500**. La inyección de dependencias no
+> encuentra `IPersonaService`, `IProfesionService`, `IEstudiosService` ni `ITelefonoService`. El inicio y Privacidad
+> sí funcionan. Esta rama **no toca `Program.cs`**.
+>
+> **Cómo está hecho.**
+> - **Un controlador por vista** en `Controllers/ViewControllers/{Entidad}/`. GET y POST de la misma vista van en el
+>   mismo controlador.
+> - **Rutas por atributo en español:** `/Personas`, `/Personas/Crear`, `/Personas/Editar/{cc}`,
+>   `/Estudios/Detalle/{idProf}/{ccPer}`, `/Telefonos/Eliminar/{num}`, …
+> - **Dependencias:** los controladores inyectan solo `I...Service`, nunca DAO ni `DbContext`.
+> - **Seguridad y flujo de los formularios:**
+>   - los 12 POST tienen `[ValidateAntiForgeryToken]`;
+>   - se valida `ModelState`;
+>   - al guardar se usa PRG con un mensaje en `TempData`;
+>   - si el registro no existe, se responde 404;
+>   - la llave de Editar y Eliminar sale siempre de la URL (`[FromRoute]` y `[BindNever]`).
+> - **Validaciones del §7** con mensajes en español en los ViewModels. Los ViewModels son distintos de los DTO y de
+>   las entidades.
+> - **Errores del servicio:** `ConflictoNegocioException` se muestra como mensaje en el formulario. En Eliminar, si
+>   la persona o la profesión tienen dependientes, se explica el motivo y no se borra.
+>
+> **Pruebas.**
+> - **Prueba de humo:** 100 de 100 casos OK con servicios falsos en memoria, usados solo durante la prueba (ningún
+>   commit los contiene). Detalle en `docs/vistas-mvc.md` §7 y `docs/pruebas.md`.
+> - **Capturas:** 27, en `docs/evidencias/mvc/`.
+> - **Compilación:** cada commit compila con 0 advertencias y 0 errores.
+> - **Pendiente:** repetir la prueba con los servicios reales y `persona_db`.
+>
+> **Sugerencia para el equipo: mensajes del enlace de modelos en español.** Si alguien envía sin navegador un
+> número o una fecha mal formados (por ejemplo `Cc=abc`), el mensaje sale del model binder y está en inglés. Toca
+> `Program.cs`, que es compartido, así que no está en este PR. Lo propongo para decidirlo entre todos:
+>
+> ```csharp
+> builder.Services.AddControllersWithViews(o =>
+> {
+>     o.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((v, c) => $"El valor '{v}' no es válido para {c}.");
+>     o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(c => $"El campo {c} debe ser un número.");
+>     o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(v => $"El valor '{v}' no es válido.");
+>     o.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(c => $"Falta un valor para {c}.");
+>     o.ModelBindingMessageProvider.SetValueIsInvalidAccessor(v => $"El valor '{v}' no es válido.");
+> });
+> ```
+>
+> **Documentación.**
+> - `docs/decisiones-mvc.md`: decisiones, diferencias con el contrato, pedidos a los integrantes 1 y 2, y riesgos.
+> - `docs/vistas-mvc.md`: vistas, rutas y resultados de las pruebas.
+> - `docs/procedimiento.md`: sección "Integrante 3 — Vistas".
