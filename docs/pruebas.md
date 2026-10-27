@@ -28,9 +28,30 @@
 
 27 capturas tomadas con Playwright en `docs/evidencias/mvc/` (lista en `docs/vistas-mvc.md`, sección 8).
 
+### Prueba con los servicios reales (2026-10-27)
+
+- **Entorno:** rama `feature/rest-api-services` del integrante 2 (commit `dbc8325`) unida a esta rama. Base
+  `persona_db` en SQL Server 2022 (contenedor Docker), creada con `Database/DDL/02_crear_tablas.sql` y los dos
+  scripts DML. Se agregaron 2 personas y 2 profesiones de prueba. La cadena se pasó por la variable
+  `ConnectionStrings__PersonaConnection`, sin tocar `appsettings.json`.
+- **Vistas:** la misma prueba de humo, **100 de 100 casos OK**. Incluye el borrado con dependientes, que llega como
+  `ConflictoNegocioException`.
+- **API REST:** **62 de 62 casos OK**:
+  - los 20 endpoints;
+  - los códigos 200, 201 (con `Location`), 204, 400, 404 y 409;
+  - Swagger.
+- **Casos de borde:** todos OK, sin errores en el log:
+  - tildes;
+  - `telefono.oper` nulo en la base (se muestra `""`);
+  - estudio sin fecha ni universidad;
+  - cédula fuera del rango de `INT`;
+  - números con espacios o `+`.
+- **Falla encontrada y corregida:** Swagger mostraba 52 operaciones porque incluía las rutas de los Controller View.
+  Se corrigió con el commit `fix(mvc): excluye los Controller View de Swagger`; ahora muestra solo las 20 de `/api`.
+
 ### Pendiente
 
-- Repetir la prueba con los servicios reales del integrante 2 y la base `persona_db`, en especial que el borrado
-  con dependientes llegue como `ConflictoNegocioException` (las FK son NO ACTION).
+- La API responde algunos 400 con textos en inglés (`"The Nombre field is required."`), porque los DTO del
+  integrante 2 no tienen `ErrorMessage` en `[Required]` y `[StringLength]`.
 - Un número o una fecha mal formados enviados sin navegador muestran el mensaje del model binder en inglés
   (ver `docs/decisiones-mvc.md`).
