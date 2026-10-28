@@ -6,6 +6,7 @@ using personapi_dotnet.Models.ViewModels.Profesion;
 namespace personapi_dotnet.Controllers.ViewControllers.Profesion
 {
     /// <summary>Controller View de Views/Profesion/Crear.cshtml (GET formulario, POST crear).</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class ProfesionCrearController : Controller
     {
         private readonly IProfesionService _profesiones;

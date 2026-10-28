@@ -5,6 +5,7 @@ using personapi_dotnet.Models.ViewModels.Persona;
 namespace personapi_dotnet.Controllers.ViewControllers.Persona
 {
     /// <summary>Controller View de Views/Persona/Listar.cshtml.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class PersonaListarController : Controller
     {
         private readonly IPersonaService _personas;

@@ -8,6 +8,7 @@ namespace personapi_dotnet.Controllers.ViewControllers.Persona
     /// Controller View de Views/Persona/Eliminar.cshtml. Sin cascada (contratos §2.2): si la persona
     /// tiene estudios o teléfonos, el servicio lo impide y la vista lo explica.
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class PersonaEliminarController : Controller
     {
         private readonly IPersonaService _personas;

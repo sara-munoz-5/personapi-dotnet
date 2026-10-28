@@ -10,6 +10,7 @@ namespace personapi_dotnet.Controllers.ViewControllers.Telefono
     /// Controller View de Views/Telefono/Editar.cshtml. El número sale de la URL y no se modifica;
     /// cambian el operador y el dueño (contratos §4.4).
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class TelefonoEditarController : Controller
     {
         private readonly ITelefonoService _telefonos;

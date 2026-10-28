@@ -8,6 +8,7 @@ namespace personapi_dotnet.Controllers.ViewControllers.Profesion
     /// Controller View de Views/Profesion/Eliminar.cshtml. Sin cascada (contratos §2.2): si la profesión
     /// tiene estudios, el servicio lo impide y la vista lo explica.
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class ProfesionEliminarController : Controller
     {
         private readonly IProfesionService _profesiones;

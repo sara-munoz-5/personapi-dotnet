@@ -7,6 +7,7 @@ using personapi_dotnet.Models.ViewModels.Telefono;
 namespace personapi_dotnet.Controllers.ViewControllers.Telefono
 {
     /// <summary>Controller View de Views/Telefono/Crear.cshtml. El dueño se elige de la lista de personas.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class TelefonoCrearController : Controller
     {
         private readonly ITelefonoService _telefonos;

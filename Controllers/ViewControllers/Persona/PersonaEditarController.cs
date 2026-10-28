@@ -6,6 +6,7 @@ using personapi_dotnet.Models.ViewModels.Persona;
 namespace personapi_dotnet.Controllers.ViewControllers.Persona
 {
     /// <summary>Controller View de Views/Persona/Editar.cshtml. La cédula sale de la URL, nunca del formulario.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class PersonaEditarController : Controller
     {
         private readonly IPersonaService _personas;

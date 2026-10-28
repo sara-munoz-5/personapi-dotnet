@@ -5,6 +5,7 @@ using personapi_dotnet.Models.ViewModels.Telefono;
 namespace personapi_dotnet.Controllers.ViewControllers.Telefono
 {
     /// <summary>Controller View de Views/Telefono/Listar.cshtml. Usa el servicio de personas para mostrar el dueño.</summary>
+    [ApiExplorerSettings(IgnoreApi = true)] // Controller View: fuera de Swagger, que documenta solo la API
     public class TelefonoListarController : Controller
     {
         private readonly ITelefonoService _telefonos;
