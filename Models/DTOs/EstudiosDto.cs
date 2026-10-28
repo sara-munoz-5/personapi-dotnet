@@ -1,4 +1,5 @@
-// PROPUESTA del integrante 3 según contratos §4B; pendiente de aprobación del integrante 2
+using System.ComponentModel.DataAnnotations;
+
 namespace personapi_dotnet.Models.DTOs
 {
     /// <summary>Datos de un estudio que entrega el servicio (respuesta). Llave compuesta (IdProf, CcPer).</summary>
@@ -13,9 +14,12 @@ namespace personapi_dotnet.Models.DTOs
     /// <summary>Datos para crear un estudio; la persona y la profesión deben existir.</summary>
     public class EstudiosCrearDto
     {
+        [Range(1, int.MaxValue)]
         public int IdProf { get; set; }
+        [Range(1, int.MaxValue)]
         public int CcPer { get; set; }
         public DateOnly? Fecha { get; set; }
+        [StringLength(50)]
         public string? Univer { get; set; }
     }
 
@@ -23,6 +27,7 @@ namespace personapi_dotnet.Models.DTOs
     public class EstudiosActualizarDto
     {
         public DateOnly? Fecha { get; set; }
+        [StringLength(50)]
         public string? Univer { get; set; }
     }
 }
