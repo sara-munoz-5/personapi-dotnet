@@ -43,12 +43,16 @@ public class EstudiosService : IEstudiosService
         {
             var estudio = await _estudios.CrearAsync(new Estudio
             {
-                IdProf = dto.IdProf, CcPer = dto.CcPer, Fecha = dto.Fecha, Univer = dto.Univer?.Trim()
+                IdProf = dto.IdProf, CcPer = dto.CcPer, Fecha = dto.Fecha, Univer = TextoOpcional(dto.Univer)
             });
             return Mapear(estudio);
         }
         catch (DbUpdateException ex)
         {
+            // Otra petición guardó la misma combinación o borró la persona o la profesión.
+            if (await _estudios.ObtenerPorIdAsync(dto.IdProf, dto.CcPer) != null)
+                throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada,
+                    "La combinación de persona y profesión ya está registrada.", ex);
             throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
                 "La persona o la profesión no existe.", ex);
         }
@@ -57,10 +61,13 @@ public class EstudiosService : IEstudiosService
     public Task<bool> ActualizarAsync(int idProf, int ccPer, EstudiosActualizarDto dto) =>
         _estudios.ActualizarAsync(new Estudio
         {
-            IdProf = idProf, CcPer = ccPer, Fecha = dto.Fecha, Univer = dto.Univer?.Trim()
+            IdProf = idProf, CcPer = ccPer, Fecha = dto.Fecha, Univer = TextoOpcional(dto.Univer)
         });
 
     public Task<bool> EliminarAsync(int idProf, int ccPer) => _estudios.EliminarAsync(idProf, ccPer);
+
+    /// <summary>Texto opcional: vacío o solo espacios se guarda como NULL.</summary>
+    private static string? TextoOpcional(string? texto) => string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
 
     private static EstudiosDto Mapear(Estudio estudio) => new()
     {

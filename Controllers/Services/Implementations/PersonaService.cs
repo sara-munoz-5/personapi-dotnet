@@ -66,7 +66,15 @@ public class PersonaService : IPersonaService
             throw new ConflictoNegocioException(TipoConflicto.BorradoConReferencias,
                 "La persona tiene registros relacionados.");
 
-        return await _personas.EliminarAsync(cc);
+        try
+        {
+            return await _personas.EliminarAsync(cc);
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new ConflictoNegocioException(TipoConflicto.BorradoConReferencias,
+                "La persona tiene registros relacionados.", ex);
+        }
     }
 
     private static PersonaDto Mapear(Persona persona) => new()

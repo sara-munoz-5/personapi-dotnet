@@ -35,7 +35,7 @@ public class ProfesionService : IProfesionService
         {
             var profesion = await _profesiones.CrearAsync(new Profesion
             {
-                Id = dto.Id, Nom = dto.Nom.Trim(), Des = dto.Des?.Trim()
+                Id = dto.Id, Nom = dto.Nom.Trim(), Des = TextoOpcional(dto.Des)
             });
             return Mapear(profesion);
         }
@@ -48,7 +48,7 @@ public class ProfesionService : IProfesionService
     public Task<bool> ActualizarAsync(int id, ProfesionActualizarDto dto) =>
         _profesiones.ActualizarAsync(new Profesion
         {
-            Id = id, Nom = dto.Nom.Trim(), Des = dto.Des?.Trim()
+            Id = id, Nom = dto.Nom.Trim(), Des = TextoOpcional(dto.Des)
         });
 
     public async Task<bool> EliminarAsync(int id)
@@ -60,8 +60,19 @@ public class ProfesionService : IProfesionService
             throw new ConflictoNegocioException(TipoConflicto.BorradoConReferencias,
                 "La profesión tiene estudios relacionados.");
 
-        return await _profesiones.EliminarAsync(id);
+        try
+        {
+            return await _profesiones.EliminarAsync(id);
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new ConflictoNegocioException(TipoConflicto.BorradoConReferencias,
+                "La profesión tiene estudios relacionados.", ex);
+        }
     }
+
+    /// <summary>Texto opcional: vacío o solo espacios se guarda como NULL.</summary>
+    private static string? TextoOpcional(string? texto) => string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
 
     private static ProfesionDto Mapear(Profesion profesion) => new()
     {

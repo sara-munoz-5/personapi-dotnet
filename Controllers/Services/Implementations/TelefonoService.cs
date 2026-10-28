@@ -28,7 +28,8 @@ public class TelefonoService : ITelefonoService
 
     public async Task<TelefonoDto> CrearAsync(TelefonoCrearDto dto)
     {
-        if (await _telefonos.ObtenerPorIdAsync(dto.Num) != null)
+        var num = dto.Num.Trim();
+        if (await _telefonos.ObtenerPorIdAsync(num) != null)
             throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada,
                 "El número de teléfono ya está registrado.");
 
@@ -40,12 +41,16 @@ public class TelefonoService : ITelefonoService
         {
             var telefono = await _telefonos.CrearAsync(new Telefono
             {
-                Num = dto.Num.Trim(), Oper = dto.Oper.Trim(), Duenio = dto.Duenio
+                Num = num, Oper = dto.Oper.Trim(), Duenio = dto.Duenio
             });
             return Mapear(telefono);
         }
         catch (DbUpdateException ex)
         {
+            // Otra petición guardó el mismo número o borró al dueño entre la validación y el guardado.
+            if (await _telefonos.ObtenerPorIdAsync(num) != null)
+                throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada,
+                    "El número de teléfono ya está registrado.", ex);
             throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
                 "El dueño del teléfono no existe.", ex);
         }
@@ -60,10 +65,19 @@ public class TelefonoService : ITelefonoService
             throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
                 "El dueño del teléfono no existe.");
 
-        return await _telefonos.ActualizarAsync(new Telefono
+        try
         {
-            Num = num, Oper = dto.Oper.Trim(), Duenio = dto.Duenio
-        });
+            return await _telefonos.ActualizarAsync(new Telefono
+            {
+                Num = num, Oper = dto.Oper.Trim(), Duenio = dto.Duenio
+            });
+        }
+        catch (DbUpdateException ex)
+        {
+            // El dueño se borró entre la validación y el guardado.
+            throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
+                "El dueño del teléfono no existe.", ex);
+        }
     }
 
     public Task<bool> EliminarAsync(string num) => _telefonos.EliminarAsync(num);
