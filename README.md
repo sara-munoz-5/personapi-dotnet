@@ -20,7 +20,7 @@ Monolito ASP.NET Core MVC con patrón DAO, servicios de negocio y API REST para 
 
 ## Configuración de la base de datos
 
-1. Crear la base de datos `persona_db` en SQL Server.
+1. Ejecutar `Database/DDL/01_crear_base_datos.sql` (crea `persona_db` si no existe).
 2. Ejecutar `Database/DDL/02_crear_tablas.sql` sobre esa base de datos.
 3. Ejecutar `Database/DML/01_insertar_datos.sql` y `Database/DML/02_insertar_datos.sql`.
 4. Revisar la cadena `PersonaConnection` en `appsettings.json`:
