@@ -71,6 +71,21 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// API: un error inesperado responde 500 con ProblemDetails genérico (detalle solo en el log, contratos §5.3),
+// y un 404 sin cuerpo (por ejemplo /api/personas/abc) también responde con ProblemDetails.
+app.UseWhen(contexto => contexto.Request.Path.StartsWithSegments("/api"), api =>
+{
+    api.UseExceptionHandler(manejador => manejador.Run(contexto =>
+        Results.Problem(
+            title: "Error interno del servidor.",
+            detail: "Ocurrió un error inesperado. Intente de nuevo más tarde.",
+            statusCode: StatusCodes.Status500InternalServerError).ExecuteAsync(contexto)));
+    api.UseStatusCodePages(contexto => contexto.HttpContext.Response.StatusCode == StatusCodes.Status404NotFound
+        ? Results.Problem(title: "Recurso no encontrado", detail: "La ruta solicitada no existe.",
+            statusCode: StatusCodes.Status404NotFound).ExecuteAsync(contexto.HttpContext)
+        : Task.CompletedTask);
+});
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
