@@ -7,6 +7,7 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/profesiones")]
 [Produces("application/json")]
+[ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
 public class ProfesionesApiController : ApiControllerBase
 {
     private readonly IProfesionService _profesiones;
@@ -17,6 +18,7 @@ public class ProfesionesApiController : ApiControllerBase
     public async Task<ActionResult<List<ProfesionDto>>> ObtenerTodos() => Ok(await _profesiones.ObtenerTodosAsync());
 
     [HttpGet("{id:int}")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProfesionDto>> ObtenerPorId(int id)
     {
         var profesion = await _profesiones.ObtenerPorIdAsync(id);
@@ -24,6 +26,9 @@ public class ProfesionesApiController : ApiControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<ProfesionDto>> Crear(ProfesionCrearDto dto)
     {
         try
@@ -38,6 +43,9 @@ public class ProfesionesApiController : ApiControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Actualizar(int id, ProfesionActualizarDto dto)
     {
         if (!await _profesiones.ActualizarAsync(id, dto))
@@ -46,6 +54,9 @@ public class ProfesionesApiController : ApiControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Eliminar(int id)
     {
         try

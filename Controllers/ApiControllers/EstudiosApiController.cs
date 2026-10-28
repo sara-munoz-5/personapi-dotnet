@@ -7,6 +7,7 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/estudios")]
 [Produces("application/json")]
+[ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
 public class EstudiosApiController : ApiControllerBase
 {
     private readonly IEstudiosService _estudios;
@@ -17,6 +18,7 @@ public class EstudiosApiController : ApiControllerBase
     public async Task<ActionResult<List<EstudiosDto>>> ObtenerTodos() => Ok(await _estudios.ObtenerTodosAsync());
 
     [HttpGet("{idProf:int}/{ccPer:int}")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<EstudiosDto>> ObtenerPorId(int idProf, int ccPer)
     {
         var estudio = await _estudios.ObtenerPorIdAsync(idProf, ccPer);
@@ -26,6 +28,9 @@ public class EstudiosApiController : ApiControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<EstudiosDto>> Crear(EstudiosCrearDto dto)
     {
         try
@@ -41,6 +46,9 @@ public class EstudiosApiController : ApiControllerBase
     }
 
     [HttpPut("{idProf:int}/{ccPer:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Actualizar(int idProf, int ccPer, EstudiosActualizarDto dto)
     {
         if (!await _estudios.ActualizarAsync(idProf, ccPer, dto))
@@ -49,6 +57,8 @@ public class EstudiosApiController : ApiControllerBase
     }
 
     [HttpDelete("{idProf:int}/{ccPer:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Eliminar(int idProf, int ccPer)
     {
         if (!await _estudios.EliminarAsync(idProf, ccPer))

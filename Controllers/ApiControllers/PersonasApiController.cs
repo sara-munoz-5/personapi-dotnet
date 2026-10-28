@@ -7,6 +7,7 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/personas")]
 [Produces("application/json")]
+[ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
 public class PersonasApiController : ApiControllerBase
 {
     private readonly IPersonaService _personas;
@@ -17,6 +18,7 @@ public class PersonasApiController : ApiControllerBase
     public async Task<ActionResult<List<PersonaDto>>> ObtenerTodos() => Ok(await _personas.ObtenerTodosAsync());
 
     [HttpGet("{cc:int}")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PersonaDto>> ObtenerPorId(int cc)
     {
         var persona = await _personas.ObtenerPorIdAsync(cc);
@@ -24,6 +26,9 @@ public class PersonasApiController : ApiControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<PersonaDto>> Crear(PersonaCrearDto dto)
     {
         try
@@ -38,6 +43,9 @@ public class PersonasApiController : ApiControllerBase
     }
 
     [HttpPut("{cc:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Actualizar(int cc, PersonaActualizarDto dto)
     {
         if (!await _personas.ActualizarAsync(cc, dto))
@@ -46,6 +54,9 @@ public class PersonasApiController : ApiControllerBase
     }
 
     [HttpDelete("{cc:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Eliminar(int cc)
     {
         try

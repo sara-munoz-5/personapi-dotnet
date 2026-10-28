@@ -7,6 +7,7 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/telefonos")]
 [Produces("application/json")]
+[ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
 public class TelefonosApiController : ApiControllerBase
 {
     private readonly ITelefonoService _telefonos;
@@ -17,6 +18,7 @@ public class TelefonosApiController : ApiControllerBase
     public async Task<ActionResult<List<TelefonoDto>>> ObtenerTodos() => Ok(await _telefonos.ObtenerTodosAsync());
 
     [HttpGet("{num}")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TelefonoDto>> ObtenerPorId(string num)
     {
         var telefono = await _telefonos.ObtenerPorIdAsync(num);
@@ -24,6 +26,9 @@ public class TelefonosApiController : ApiControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<TelefonoDto>> Crear(TelefonoCrearDto dto)
     {
         try
@@ -38,6 +43,10 @@ public class TelefonosApiController : ApiControllerBase
     }
 
     [HttpPut("{num}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Actualizar(string num, TelefonoActualizarDto dto)
     {
         try
@@ -53,6 +62,8 @@ public class TelefonosApiController : ApiControllerBase
     }
 
     [HttpDelete("{num}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Eliminar(string num)
     {
         if (!await _telefonos.EliminarAsync(num))
