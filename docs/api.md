@@ -44,6 +44,15 @@ La API se documenta con Swagger/OpenAPI y está disponible en `/swagger`.
 | PUT | `/api/telefonos/{num}` | Actualiza un teléfono |
 | DELETE | `/api/telefonos/{num}` | Elimina un teléfono |
 
+## Contratos de los controladores
+
+Los controladores siguen la convención del contrato:
+
+- `PersonasApiController`
+- `ProfesionesApiController`
+- `EstudiosApiController`
+- `TelefonosApiController`
+
 ## Respuestas HTTP
 
 - `200 OK`: consulta exitosa.
@@ -52,6 +61,21 @@ La API se documenta con Swagger/OpenAPI y está disponible en `/swagger`.
 - `400 Bad Request`: JSON inválido o violación de validaciones del DTO.
 - `404 Not Found`: recurso inexistente.
 - `409 Conflict`: clave duplicada, referencia inexistente o borrado con dependencias.
+
+Los errores `404`, `409` y `500` se devuelven como `ProblemDetails`. Los errores de validación producidos por
+`[ApiController]` se devuelven como `ValidationProblemDetails`.
+
+Ejemplo de conflicto:
+
+```json
+{
+  "type": "about:blank",
+  "title": "Conflicto de negocio",
+  "status": 409,
+  "detail": "La cédula ya está registrada.",
+  "tipo": "LlaveDuplicada"
+}
+```
 
 ## Ejemplo de creación de persona
 

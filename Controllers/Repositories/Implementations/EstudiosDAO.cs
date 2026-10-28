@@ -13,14 +13,14 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<List<Estudio>> ObtenerTodos()
+        public async Task<List<Estudio>> ObtenerTodosAsync()
         {
             return await _context.Estudios
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<Estudio?> ObtenerPorId(int idProf, int ccPer)
+        public async Task<Estudio?> ObtenerPorIdAsync(int idProf, int ccPer)
         {
             return await _context.Estudios
                 .AsNoTracking()
@@ -28,14 +28,14 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
                     e.IdProf == idProf && e.CcPer == ccPer);
         }
 
-        public async Task<Estudio> Crear(Estudio estudio)
+        public async Task<Estudio> CrearAsync(Estudio estudio)
         {
             _context.Estudios.Add(estudio);
             await _context.SaveChangesAsync();
             return estudio;
         }
 
-        public async Task<bool> Actualizar(Estudio estudio)
+        public async Task<bool> ActualizarAsync(Estudio estudio)
         {
             var existente = await _context.Estudios
                 .FirstOrDefaultAsync(e =>
@@ -52,7 +52,7 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
             return true;
         }
 
-        public async Task<bool> Eliminar(int idProf, int ccPer)
+        public async Task<bool> EliminarAsync(int idProf, int ccPer)
         {
             var estudio = await _context.Estudios
                 .FirstOrDefaultAsync(e =>

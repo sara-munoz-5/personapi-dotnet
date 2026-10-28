@@ -20,28 +20,28 @@ public class EstudiosService : IEstudiosService
     }
 
     public async Task<List<EstudiosDto>> ObtenerTodosAsync() =>
-        (await _estudios.ObtenerTodos()).Select(Mapear).ToList();
+        (await _estudios.ObtenerTodosAsync()).Select(Mapear).ToList();
 
     public async Task<EstudiosDto?> ObtenerPorIdAsync(int idProf, int ccPer)
     {
-        var estudio = await _estudios.ObtenerPorId(idProf, ccPer);
+        var estudio = await _estudios.ObtenerPorIdAsync(idProf, ccPer);
         return estudio == null ? null : Mapear(estudio);
     }
 
     public async Task<EstudiosDto> CrearAsync(EstudiosCrearDto dto)
     {
-        if (await _estudios.ObtenerPorId(dto.IdProf, dto.CcPer) != null)
+        if (await _estudios.ObtenerPorIdAsync(dto.IdProf, dto.CcPer) != null)
             throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada,
                 "La combinación de persona y profesión ya está registrada.");
 
-        if (await _personas.ObtenerPorId(dto.CcPer) == null ||
-            await _profesiones.ObtenerPorId(dto.IdProf) == null)
+        if (await _personas.ObtenerPorIdAsync(dto.CcPer) == null ||
+            await _profesiones.ObtenerPorIdAsync(dto.IdProf) == null)
             throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
                 "La persona o la profesión no existe.");
 
         try
         {
-            var estudio = await _estudios.Crear(new Estudio
+            var estudio = await _estudios.CrearAsync(new Estudio
             {
                 IdProf = dto.IdProf, CcPer = dto.CcPer, Fecha = dto.Fecha, Univer = dto.Univer?.Trim()
             });
@@ -55,12 +55,12 @@ public class EstudiosService : IEstudiosService
     }
 
     public Task<bool> ActualizarAsync(int idProf, int ccPer, EstudiosActualizarDto dto) =>
-        _estudios.Actualizar(new Estudio
+        _estudios.ActualizarAsync(new Estudio
         {
             IdProf = idProf, CcPer = ccPer, Fecha = dto.Fecha, Univer = dto.Univer?.Trim()
         });
 
-    public Task<bool> EliminarAsync(int idProf, int ccPer) => _estudios.Eliminar(idProf, ccPer);
+    public Task<bool> EliminarAsync(int idProf, int ccPer) => _estudios.EliminarAsync(idProf, ccPer);
 
     private static EstudiosDto Mapear(Estudio estudio) => new()
     {

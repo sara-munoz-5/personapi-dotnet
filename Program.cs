@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using personapi_dotnet.Models.EntitiesGeneradas;
 using personapi_dotnet.Controllers.Repositories.Interfaces;
 using personapi_dotnet.Controllers.Repositories.Implementations;

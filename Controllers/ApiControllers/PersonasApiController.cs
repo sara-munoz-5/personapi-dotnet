@@ -7,11 +7,11 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/personas")]
 [Produces("application/json")]
-public class PersonaApiController : ControllerBase
+public class PersonasApiController : ApiControllerBase
 {
     private readonly IPersonaService _personas;
 
-    public PersonaApiController(IPersonaService personas) => _personas = personas;
+    public PersonasApiController(IPersonaService personas) => _personas = personas;
 
     [HttpGet]
     public async Task<ActionResult<List<PersonaDto>>> ObtenerTodos() => Ok(await _personas.ObtenerTodosAsync());
@@ -20,7 +20,7 @@ public class PersonaApiController : ControllerBase
     public async Task<ActionResult<PersonaDto>> ObtenerPorId(int cc)
     {
         var persona = await _personas.ObtenerPorIdAsync(cc);
-        return persona == null ? NotFound() : Ok(persona);
+        return persona == null ? RecursoNoEncontrado($"No existe la persona con cédula {cc}.") : Ok(persona);
     }
 
     [HttpPost]
@@ -33,7 +33,7 @@ public class PersonaApiController : ControllerBase
         }
         catch (ConflictoNegocioException ex) when (ex.Tipo == TipoConflicto.LlaveDuplicada)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 
@@ -41,7 +41,7 @@ public class PersonaApiController : ControllerBase
     public async Task<IActionResult> Actualizar(int cc, PersonaActualizarDto dto)
     {
         if (!await _personas.ActualizarAsync(cc, dto))
-            return NotFound();
+            return RecursoNoEncontrado($"No existe la persona con cédula {cc}.");
         return NoContent();
     }
 
@@ -51,12 +51,12 @@ public class PersonaApiController : ControllerBase
         try
         {
             if (!await _personas.EliminarAsync(cc))
-                return NotFound();
+                return RecursoNoEncontrado($"No existe la persona con cédula {cc}.");
             return NoContent();
         }
         catch (ConflictoNegocioException ex) when (ex.Tipo == TipoConflicto.BorradoConReferencias)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 }

@@ -7,11 +7,11 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/telefonos")]
 [Produces("application/json")]
-public class TelefonoApiController : ControllerBase
+public class TelefonosApiController : ApiControllerBase
 {
     private readonly ITelefonoService _telefonos;
 
-    public TelefonoApiController(ITelefonoService telefonos) => _telefonos = telefonos;
+    public TelefonosApiController(ITelefonoService telefonos) => _telefonos = telefonos;
 
     [HttpGet]
     public async Task<ActionResult<List<TelefonoDto>>> ObtenerTodos() => Ok(await _telefonos.ObtenerTodosAsync());
@@ -20,7 +20,7 @@ public class TelefonoApiController : ControllerBase
     public async Task<ActionResult<TelefonoDto>> ObtenerPorId(string num)
     {
         var telefono = await _telefonos.ObtenerPorIdAsync(num);
-        return telefono == null ? NotFound() : Ok(telefono);
+        return telefono == null ? RecursoNoEncontrado($"No existe el teléfono {num}.") : Ok(telefono);
     }
 
     [HttpPost]
@@ -33,7 +33,7 @@ public class TelefonoApiController : ControllerBase
         }
         catch (ConflictoNegocioException ex)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 
@@ -43,12 +43,12 @@ public class TelefonoApiController : ControllerBase
         try
         {
             if (!await _telefonos.ActualizarAsync(num, dto))
-                return NotFound();
+                return RecursoNoEncontrado($"No existe el teléfono {num}.");
             return NoContent();
         }
         catch (ConflictoNegocioException ex) when (ex.Tipo == TipoConflicto.ReferenciaInexistente)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 
@@ -56,7 +56,7 @@ public class TelefonoApiController : ControllerBase
     public async Task<IActionResult> Eliminar(string num)
     {
         if (!await _telefonos.EliminarAsync(num))
-            return NotFound();
+            return RecursoNoEncontrado($"No existe el teléfono {num}.");
         return NoContent();
     }
 }

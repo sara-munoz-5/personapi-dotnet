@@ -18,15 +18,10 @@ o carpetas, manda la estructura de `main`; para reglas, validaciones, flujo y bo
 | Plantilla MVC | `Controllers/HomeController.cs`, `Views/Home/*`, `Views/Shared/*`, `wwwroot/*`, `Models/ErrorViewModel.cs` | Compartido |
 | Documentación | `docs/contratos (1).md`, `docs/prueba-dao.md` | Equipo / integrante 1 |
 
-### Archivos vacíos (0 bytes)
+### Estado actual de los archivos
 
-- `Database/DDL/01_crear_base_datos.sql` (integrante 1).
-- `Controllers/ApiControllers/*ApiController.cs` (4), `Controllers/Services/Implementations/*Service.cs` (4),
-  `Controllers/Services/Interfaces/I*Service.cs` (4) y `Models/DTOs/*Dto.cs` (4) — integrante 2.
-- `Controllers/ViewControllers/{Entidad}/*Controller.cs` (20), `Models/ViewModels/{Entidad}/*ViewModel.cs` (20)
-  y `Views/{Persona,Profesion,Estudios,Telefono}/{Listar,Detalle,Crear,Editar,Eliminar}.cshtml` (20) — integrante 3.
-- `docs/arquitectura.md`, `docs/conclusiones.md`, `docs/procedimiento.md`, `docs/pruebas.md`,
-  `docs/diagramas/README.md`, `docs/evidencias/README.md`.
+- Los archivos DAO, Services, DTO, controladores API, controladores MVC y vistas están implementados.
+- La documentación consolidada se encuentra en `README.md`, `docs/arquitectura.md`, `docs/servicios.md` y `docs/api.md`.
 
 ### Lo que ya entregó el integrante 1
 
@@ -34,16 +29,14 @@ o carpetas, manda la estructura de `main`; para reglas, validaciones, flujo y bo
   (NO ACTION, como pide el contrato §2.2); CHECK de género `M`/`F` y de edad `>= 0`.
 - `profesion.id` **no es IDENTITY** (`ValueGeneratedNever`): el id se escribe a mano al crear.
 - `telefono.oper` admite NULL en la base (`string?` en la entidad), aunque el contrato §2.1 lo pide NOT NULL.
-- Los métodos DAO se llaman `ObtenerTodos`, `ObtenerPorId`, `Crear`, `Actualizar` y `Eliminar` (sin sufijo `Async`,
-  a diferencia del contrato §4). La clase de la entidad es `Estudio` (el contrato dice `Estudios`).
+- Los métodos DAO siguen las firmas contractuales `ObtenerTodosAsync`, `ObtenerPorIdAsync`, `CrearAsync`,
+  `ActualizarAsync` y `EliminarAsync`. La clase generada es `Estudio` aunque el contrato conceptual use `Estudios`.
 - Los DAO devuelven entidades sin navegaciones (`AsNoTracking`, sin `Include`).
 
-### Lo que falta del integrante 2
+### Implementación actual del integrante 2
 
-- No hay rama del integrante 2 en `origin` (solo `main`, `feature/database-dao` y las ramas viejas obsoletas).
-- Faltan: interfaces y DTO con contenido, implementaciones de los 4 Services, su registro en `Program.cs`,
-  los 4 API Controller y Swagger (el paquete Swashbuckle aún no está en el `.csproj`).
-- Por eso propuse las interfaces y los DTO (sección 2), marcados como PROPUESTA en cada archivo.
+- Los cuatro Services, DTO, controladores API y Swagger están implementados y registrados en `Program.cs`.
+- Las respuestas de error API usan `ProblemDetails` y `ValidationProblemDetails` según la sección 5.3.
 
 ## 2. Propuesta de interfaces de Service y DTO (contratos §4B)
 

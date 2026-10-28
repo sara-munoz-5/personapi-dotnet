@@ -18,27 +18,27 @@ public class TelefonoService : ITelefonoService
     }
 
     public async Task<List<TelefonoDto>> ObtenerTodosAsync() =>
-        (await _telefonos.ObtenerTodos()).Select(Mapear).ToList();
+        (await _telefonos.ObtenerTodosAsync()).Select(Mapear).ToList();
 
     public async Task<TelefonoDto?> ObtenerPorIdAsync(string num)
     {
-        var telefono = await _telefonos.ObtenerPorId(num);
+        var telefono = await _telefonos.ObtenerPorIdAsync(num);
         return telefono == null ? null : Mapear(telefono);
     }
 
     public async Task<TelefonoDto> CrearAsync(TelefonoCrearDto dto)
     {
-        if (await _telefonos.ObtenerPorId(dto.Num) != null)
+        if (await _telefonos.ObtenerPorIdAsync(dto.Num) != null)
             throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada,
                 "El número de teléfono ya está registrado.");
 
-        if (await _personas.ObtenerPorId(dto.Duenio) == null)
+        if (await _personas.ObtenerPorIdAsync(dto.Duenio) == null)
             throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
                 "El dueño del teléfono no existe.");
 
         try
         {
-            var telefono = await _telefonos.Crear(new Telefono
+            var telefono = await _telefonos.CrearAsync(new Telefono
             {
                 Num = dto.Num.Trim(), Oper = dto.Oper.Trim(), Duenio = dto.Duenio
             });
@@ -53,20 +53,20 @@ public class TelefonoService : ITelefonoService
 
     public async Task<bool> ActualizarAsync(string num, TelefonoActualizarDto dto)
     {
-        if (await _telefonos.ObtenerPorId(num) == null)
+        if (await _telefonos.ObtenerPorIdAsync(num) == null)
             return false;
 
-        if (await _personas.ObtenerPorId(dto.Duenio) == null)
+        if (await _personas.ObtenerPorIdAsync(dto.Duenio) == null)
             throw new ConflictoNegocioException(TipoConflicto.ReferenciaInexistente,
                 "El dueño del teléfono no existe.");
 
-        return await _telefonos.Actualizar(new Telefono
+        return await _telefonos.ActualizarAsync(new Telefono
         {
             Num = num, Oper = dto.Oper.Trim(), Duenio = dto.Duenio
         });
     }
 
-    public Task<bool> EliminarAsync(string num) => _telefonos.Eliminar(num);
+    public Task<bool> EliminarAsync(string num) => _telefonos.EliminarAsync(num);
 
     private static TelefonoDto Mapear(Telefono telefono) => new()
     {

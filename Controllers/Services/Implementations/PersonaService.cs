@@ -20,22 +20,22 @@ public class PersonaService : IPersonaService
     }
 
     public async Task<List<PersonaDto>> ObtenerTodosAsync() =>
-        (await _personas.ObtenerTodos()).Select(Mapear).ToList();
+        (await _personas.ObtenerTodosAsync()).Select(Mapear).ToList();
 
     public async Task<PersonaDto?> ObtenerPorIdAsync(int cc)
     {
-        var persona = await _personas.ObtenerPorId(cc);
+        var persona = await _personas.ObtenerPorIdAsync(cc);
         return persona == null ? null : Mapear(persona);
     }
 
     public async Task<PersonaDto> CrearAsync(PersonaCrearDto dto)
     {
-        if (await _personas.ObtenerPorId(dto.Cc) != null)
+        if (await _personas.ObtenerPorIdAsync(dto.Cc) != null)
             throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada, "La cédula ya está registrada.");
 
         try
         {
-            var persona = await _personas.Crear(new Persona
+            var persona = await _personas.CrearAsync(new Persona
             {
                 Cc = dto.Cc, Nombre = dto.Nombre.Trim(), Apellido = dto.Apellido.Trim(),
                 Genero = dto.Genero, Edad = dto.Edad
@@ -49,7 +49,7 @@ public class PersonaService : IPersonaService
     }
 
     public Task<bool> ActualizarAsync(int cc, PersonaActualizarDto dto) =>
-        _personas.Actualizar(new Persona
+        _personas.ActualizarAsync(new Persona
         {
             Cc = cc, Nombre = dto.Nombre.Trim(), Apellido = dto.Apellido.Trim(),
             Genero = dto.Genero, Edad = dto.Edad
@@ -57,16 +57,16 @@ public class PersonaService : IPersonaService
 
     public async Task<bool> EliminarAsync(int cc)
     {
-        if (await _personas.ObtenerPorId(cc) == null)
+        if (await _personas.ObtenerPorIdAsync(cc) == null)
             return false;
 
-        var tieneEstudios = (await _estudios.ObtenerTodos()).Any(e => e.CcPer == cc);
-        var tieneTelefonos = (await _telefonos.ObtenerTodos()).Any(t => t.Duenio == cc);
+        var tieneEstudios = (await _estudios.ObtenerTodosAsync()).Any(e => e.CcPer == cc);
+        var tieneTelefonos = (await _telefonos.ObtenerTodosAsync()).Any(t => t.Duenio == cc);
         if (tieneEstudios || tieneTelefonos)
             throw new ConflictoNegocioException(TipoConflicto.BorradoConReferencias,
                 "La persona tiene registros relacionados.");
 
-        return await _personas.Eliminar(cc);
+        return await _personas.EliminarAsync(cc);
     }
 
     private static PersonaDto Mapear(Persona persona) => new()

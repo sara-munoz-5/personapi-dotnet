@@ -18,22 +18,22 @@ public class ProfesionService : IProfesionService
     }
 
     public async Task<List<ProfesionDto>> ObtenerTodosAsync() =>
-        (await _profesiones.ObtenerTodos()).Select(Mapear).ToList();
+        (await _profesiones.ObtenerTodosAsync()).Select(Mapear).ToList();
 
     public async Task<ProfesionDto?> ObtenerPorIdAsync(int id)
     {
-        var profesion = await _profesiones.ObtenerPorId(id);
+        var profesion = await _profesiones.ObtenerPorIdAsync(id);
         return profesion == null ? null : Mapear(profesion);
     }
 
     public async Task<ProfesionDto> CrearAsync(ProfesionCrearDto dto)
     {
-        if (await _profesiones.ObtenerPorId(dto.Id) != null)
+        if (await _profesiones.ObtenerPorIdAsync(dto.Id) != null)
             throw new ConflictoNegocioException(TipoConflicto.LlaveDuplicada, "El id ya está registrado.");
 
         try
         {
-            var profesion = await _profesiones.Crear(new Profesion
+            var profesion = await _profesiones.CrearAsync(new Profesion
             {
                 Id = dto.Id, Nom = dto.Nom.Trim(), Des = dto.Des?.Trim()
             });
@@ -46,21 +46,21 @@ public class ProfesionService : IProfesionService
     }
 
     public Task<bool> ActualizarAsync(int id, ProfesionActualizarDto dto) =>
-        _profesiones.Actualizar(new Profesion
+        _profesiones.ActualizarAsync(new Profesion
         {
             Id = id, Nom = dto.Nom.Trim(), Des = dto.Des?.Trim()
         });
 
     public async Task<bool> EliminarAsync(int id)
     {
-        if (await _profesiones.ObtenerPorId(id) == null)
+        if (await _profesiones.ObtenerPorIdAsync(id) == null)
             return false;
 
-        if ((await _estudios.ObtenerTodos()).Any(e => e.IdProf == id))
+        if ((await _estudios.ObtenerTodosAsync()).Any(e => e.IdProf == id))
             throw new ConflictoNegocioException(TipoConflicto.BorradoConReferencias,
                 "La profesión tiene estudios relacionados.");
 
-        return await _profesiones.Eliminar(id);
+        return await _profesiones.EliminarAsync(id);
     }
 
     private static ProfesionDto Mapear(Profesion profesion) => new()

@@ -7,11 +7,11 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/profesiones")]
 [Produces("application/json")]
-public class ProfesionApiController : ControllerBase
+public class ProfesionesApiController : ApiControllerBase
 {
     private readonly IProfesionService _profesiones;
 
-    public ProfesionApiController(IProfesionService profesiones) => _profesiones = profesiones;
+    public ProfesionesApiController(IProfesionService profesiones) => _profesiones = profesiones;
 
     [HttpGet]
     public async Task<ActionResult<List<ProfesionDto>>> ObtenerTodos() => Ok(await _profesiones.ObtenerTodosAsync());
@@ -20,7 +20,7 @@ public class ProfesionApiController : ControllerBase
     public async Task<ActionResult<ProfesionDto>> ObtenerPorId(int id)
     {
         var profesion = await _profesiones.ObtenerPorIdAsync(id);
-        return profesion == null ? NotFound() : Ok(profesion);
+        return profesion == null ? RecursoNoEncontrado($"No existe la profesión con id {id}.") : Ok(profesion);
     }
 
     [HttpPost]
@@ -33,7 +33,7 @@ public class ProfesionApiController : ControllerBase
         }
         catch (ConflictoNegocioException ex) when (ex.Tipo == TipoConflicto.LlaveDuplicada)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 
@@ -41,7 +41,7 @@ public class ProfesionApiController : ControllerBase
     public async Task<IActionResult> Actualizar(int id, ProfesionActualizarDto dto)
     {
         if (!await _profesiones.ActualizarAsync(id, dto))
-            return NotFound();
+            return RecursoNoEncontrado($"No existe la profesión con id {id}.");
         return NoContent();
     }
 
@@ -51,12 +51,12 @@ public class ProfesionApiController : ControllerBase
         try
         {
             if (!await _profesiones.EliminarAsync(id))
-                return NotFound();
+                return RecursoNoEncontrado($"No existe la profesión con id {id}.");
             return NoContent();
         }
         catch (ConflictoNegocioException ex) when (ex.Tipo == TipoConflicto.BorradoConReferencias)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 }

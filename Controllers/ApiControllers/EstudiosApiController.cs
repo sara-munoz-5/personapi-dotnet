@@ -7,7 +7,7 @@ namespace personapi_dotnet.Controllers.ApiControllers;
 [ApiController]
 [Route("api/estudios")]
 [Produces("application/json")]
-public class EstudiosApiController : ControllerBase
+public class EstudiosApiController : ApiControllerBase
 {
     private readonly IEstudiosService _estudios;
 
@@ -20,7 +20,9 @@ public class EstudiosApiController : ControllerBase
     public async Task<ActionResult<EstudiosDto>> ObtenerPorId(int idProf, int ccPer)
     {
         var estudio = await _estudios.ObtenerPorIdAsync(idProf, ccPer);
-        return estudio == null ? NotFound() : Ok(estudio);
+        return estudio == null
+            ? RecursoNoEncontrado($"No existe el estudio {idProf}/{ccPer}.")
+            : Ok(estudio);
     }
 
     [HttpPost]
@@ -34,7 +36,7 @@ public class EstudiosApiController : ControllerBase
         }
         catch (ConflictoNegocioException ex)
         {
-            return Conflict(new { mensaje = ex.Message, tipo = ex.Tipo.ToString() });
+            return Conflicto(ex);
         }
     }
 
@@ -42,7 +44,7 @@ public class EstudiosApiController : ControllerBase
     public async Task<IActionResult> Actualizar(int idProf, int ccPer, EstudiosActualizarDto dto)
     {
         if (!await _estudios.ActualizarAsync(idProf, ccPer, dto))
-            return NotFound();
+            return RecursoNoEncontrado($"No existe el estudio {idProf}/{ccPer}.");
         return NoContent();
     }
 
@@ -50,7 +52,7 @@ public class EstudiosApiController : ControllerBase
     public async Task<IActionResult> Eliminar(int idProf, int ccPer)
     {
         if (!await _estudios.EliminarAsync(idProf, ccPer))
-            return NotFound();
+            return RecursoNoEncontrado($"No existe el estudio {idProf}/{ccPer}.");
         return NoContent();
     }
 }

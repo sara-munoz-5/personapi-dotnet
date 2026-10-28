@@ -4,10 +4,10 @@ namespace personapi_dotnet.Controllers.Repositories.Interfaces
 {
     public interface IProfesionDAO
     {
-        Task<List<Profesion>> ObtenerTodos();
-        Task<Profesion?> ObtenerPorId(int id);
-        Task<Profesion> Crear(Profesion profesion);
-        Task<bool> Actualizar(Profesion profesion);
-        Task<bool> Eliminar(int id);
+        Task<List<Profesion>> ObtenerTodosAsync();
+        Task<Profesion?> ObtenerPorIdAsync(int id);
+        Task<Profesion> CrearAsync(Profesion profesion);
+        Task<bool> ActualizarAsync(Profesion profesion);
+        Task<bool> EliminarAsync(int id);
     }
 }
