@@ -21,29 +21,31 @@
 }
 else
 {
-    <table class="table table-striped table-hover align-middle">
-        <thead>
-            <tr>
-                <th scope="col">Número</th>
-                <th scope="col">Operador</th>
-                <th scope="col">Dueño</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model.Telefonos)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
                 <tr>
-                    <td>@t.Num</td>
-                    <td>@t.Oper</td>
-                    <td><a asp-controller="PersonaDetalle" asp-action="Detalle" asp-route-cc="@t.Duenio">@t.NombreDuenio</a></td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-info" asp-controller="TelefonoDetalle" asp-action="Detalle" asp-route-num="@t.Num">Detalle</a>
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="TelefonoEditar" asp-action="Editar" asp-route-num="@t.Num">Editar</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-controller="TelefonoEliminar" asp-action="Eliminar" asp-route-num="@t.Num">Eliminar</a>
-                    </td>
+                    <th scope="col">Número</th>
+                    <th scope="col">Operador</th>
+                    <th scope="col">Dueño</th>
+                    <th scope="col">Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.Telefonos)
+                {
+                    <tr>
+                        <td>@t.Num</td>
+                        <td>@t.Oper</td>
+                        <td><a asp-controller="PersonaDetalle" asp-action="Detalle" asp-route-cc="@t.Duenio">@t.NombreDuenio</a></td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-info" asp-controller="TelefonoDetalle" asp-action="Detalle" asp-route-num="@t.Num">Detalle</a>
+                            <a class="btn btn-sm btn-outline-primary" asp-controller="TelefonoEditar" asp-action="Editar" asp-route-num="@t.Num">Editar</a>
+                            <a class="btn btn-sm btn-outline-danger" asp-controller="TelefonoEliminar" asp-action="Eliminar" asp-route-num="@t.Num">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }

@@ -21,31 +21,33 @@
 }
 else
 {
-    <table class="table table-striped table-hover align-middle">
-        <thead>
-            <tr>
-                <th scope="col">Persona</th>
-                <th scope="col">Profesión</th>
-                <th scope="col">Universidad</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var e in Model.Estudios)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
                 <tr>
-                    <td>@e.Persona</td>
-                    <td>@e.Profesion</td>
-                    <td>@(e.Univer ?? "—")</td>
-                    <td>@(e.Fecha?.ToString("dd/MM/yyyy") ?? "—")</td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-info" asp-controller="EstudiosDetalle" asp-action="Detalle" asp-route-idProf="@e.IdProf" asp-route-ccPer="@e.CcPer">Detalle</a>
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="EstudiosEditar" asp-action="Editar" asp-route-idProf="@e.IdProf" asp-route-ccPer="@e.CcPer">Editar</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-controller="EstudiosEliminar" asp-action="Eliminar" asp-route-idProf="@e.IdProf" asp-route-ccPer="@e.CcPer">Eliminar</a>
-                    </td>
+                    <th scope="col">Persona</th>
+                    <th scope="col">Profesión</th>
+                    <th scope="col">Universidad</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var e in Model.Estudios)
+                {
+                    <tr>
+                        <td>@e.Persona</td>
+                        <td>@e.Profesion</td>
+                        <td>@(e.Univer ?? "—")</td>
+                        <td>@(e.Fecha?.ToString("dd/MM/yyyy") ?? "—")</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-info" asp-controller="EstudiosDetalle" asp-action="Detalle" asp-route-idProf="@e.IdProf" asp-route-ccPer="@e.CcPer">Detalle</a>
+                            <a class="btn btn-sm btn-outline-primary" asp-controller="EstudiosEditar" asp-action="Editar" asp-route-idProf="@e.IdProf" asp-route-ccPer="@e.CcPer">Editar</a>
+                            <a class="btn btn-sm btn-outline-danger" asp-controller="EstudiosEliminar" asp-action="Eliminar" asp-route-idProf="@e.IdProf" asp-route-ccPer="@e.CcPer">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
