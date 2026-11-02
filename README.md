@@ -28,7 +28,9 @@ Monolito ASP.NET Core MVC con patrón DAO, servicios de negocio y API REST para 
 ```text
 Server=localhost\\SQLEXPRESS;Database=persona_db;Trusted_Connection=True;TrustServerCertificate=True;
 ```
-
+5. Opcionalmente, ejecutar `Database/DML/03_datos_prueba_ampliados.sql`
+   para cargar registros adicionales de personas, profesiones,
+   estudios y teléfonos.
 Para otra instancia, cambiar únicamente el valor de `Server`.
 
 ## Compilar y ejecutar
