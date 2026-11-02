@@ -26,7 +26,22 @@
 
 ### Capturas
 
-27 capturas tomadas con Playwright en `docs/evidencias/mvc/` (lista en `docs/vistas-mvc.md`, sección 8).
+- **Vistas:** 27 capturas tomadas con Playwright en `docs/evidencias/mvc/` (lista en `docs/vistas-mvc.md`,
+  sección 8). Se tomaron de nuevo el 2026-11-02 sobre la versión publicada, con SQL Server real.
+- **API:** 8 capturas de Swagger UI en `docs/evidencias/api/`. Cada una prueba una operación con "Try it out":
+  201, 200, 400, 409, 204 y 404.
+
+### Despliegue y scripts (2026-11-02)
+
+- **Scripts:** los de `Database/` se ejecutaron tal cual con `sqlcmd` en un SQL Server vacío, en el orden del README,
+  y todos corrieron sin errores. `03_datos_prueba_ampliados.sql`, `01_crear_base_datos.sql` y los dos primeros DML
+  también corren por segunda vez sin errores ni duplicados.
+- **Publicación:** `dotnet publish -c Release`, y luego `dotnet personapi-dotnet.dll` en ambiente Production.
+  Respondieron las 20 vistas, la API y Swagger. Con la base apagada, la vista muestra la página de error en español
+  y la API un `ProblemDetails` genérico.
+- **Corrección:** el layout pedía `personapi_dotnet.styles.css`, pero el archivo generado es
+  `personapi-dotnet.styles.css`. Daba un 404 en todas las páginas y no se cargaban los estilos del menú; quedó
+  corregido.
 
 ### Prueba con los servicios reales (2026-10-27)
 

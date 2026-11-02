@@ -260,8 +260,9 @@ propuesta en `docs/decisiones-mvc.md` porque toca `Program.cs`.
 
 ## 8. Capturas
 
-Tomadas con Playwright (Chromium sin interfaz, 1280 px de ancho) sobre los mismos servicios falsos; están en
-`docs/evidencias/mvc/`.
+Tomadas con Playwright (Chromium sin interfaz, 1280 px de ancho) en `docs/evidencias/mvc/`. La versión actual
+(2026-11-02) se tomó sobre la aplicación publicada (`dotnet publish`, ambiente Production) con los servicios reales y
+SQL Server 2022, cargado con los scripts de `Database/`. La primera versión se había tomado con servicios falsos.
 
 | Archivo | Qué muestra |
 |---|---|
