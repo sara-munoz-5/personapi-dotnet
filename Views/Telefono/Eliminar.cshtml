@@ -1,0 +1,22 @@
+@model personapi_dotnet.Models.ViewModels.Telefono.TelefonoEliminarViewModel
+@{
+    ViewData["Title"] = "Eliminar teléfono";
+}
+
+<h1>Eliminar teléfono</h1>
+
+<div class="alert alert-warning">¿Seguro que desea eliminar este teléfono? Esta acción no se puede deshacer.</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Número</dt>
+    <dd class="col-sm-9">@Model.Num</dd>
+    <dt class="col-sm-3">Operador</dt>
+    <dd class="col-sm-9">@Model.Oper</dd>
+    <dt class="col-sm-3">Dueño</dt>
+    <dd class="col-sm-9">@Model.NombreDuenio</dd>
+</dl>
+
+<form asp-controller="TelefonoEliminar" asp-action="Eliminar" asp-route-num="@Model.Num" method="post">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" asp-controller="TelefonoListar" asp-action="Listar">Volver</a>
+</form>

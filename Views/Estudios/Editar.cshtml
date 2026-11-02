@@ -1,0 +1,39 @@
+@model personapi_dotnet.Models.ViewModels.Estudios.EstudiosEditarViewModel
+@{
+    ViewData["Title"] = "Editar estudio";
+}
+
+<h1>Editar estudio</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="EstudiosEditar" asp-action="Editar" asp-route-idProf="@Model.IdProf" asp-route-ccPer="@Model.CcPer" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="CcPer" class="form-label"></label>
+                <select asp-for="CcPer" asp-items="Model.Personas" class="form-select" disabled></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="IdProf" class="form-label"></label>
+                <select asp-for="IdProf" asp-items="Model.Profesiones" class="form-select" disabled></select>
+                <div class="form-text">La persona y la profesión forman la llave del estudio y no se pueden cambiar.</div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Univer" class="form-label"></label>
+                <input asp-for="Univer" class="form-control" />
+                <span asp-validation-for="Univer" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Fecha" class="form-label"></label>
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a class="btn btn-secondary" asp-controller="EstudiosListar" asp-action="Listar">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

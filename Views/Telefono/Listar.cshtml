@@ -1,0 +1,49 @@
+@model personapi_dotnet.Models.ViewModels.Telefono.TelefonoListarViewModel
+@{
+    ViewData["Title"] = "Teléfonos";
+}
+
+<h1>Teléfonos</h1>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-success" role="status">@Model.Mensaje</div>
+}
+
+<p>
+    <a class="btn btn-primary" asp-controller="TelefonoCrear" asp-action="Crear">Nuevo teléfono</a>
+    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Volver al inicio</a>
+</p>
+
+@if (Model.Telefonos.Count == 0)
+{
+    <div class="alert alert-info">No hay teléfonos registrados.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th scope="col">Número</th>
+                <th scope="col">Operador</th>
+                <th scope="col">Dueño</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.Telefonos)
+            {
+                <tr>
+                    <td>@t.Num</td>
+                    <td>@t.Oper</td>
+                    <td><a asp-controller="PersonaDetalle" asp-action="Detalle" asp-route-cc="@t.Duenio">@t.NombreDuenio</a></td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-info" asp-controller="TelefonoDetalle" asp-action="Detalle" asp-route-num="@t.Num">Detalle</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-controller="TelefonoEditar" asp-action="Editar" asp-route-num="@t.Num">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-controller="TelefonoEliminar" asp-action="Eliminar" asp-route-num="@t.Num">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

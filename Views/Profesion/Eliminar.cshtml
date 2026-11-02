@@ -1,0 +1,32 @@
+@model personapi_dotnet.Models.ViewModels.Profesion.ProfesionEliminarViewModel
+@{
+    ViewData["Title"] = "Eliminar profesión";
+}
+
+<h1>Eliminar profesión</h1>
+
+@if (ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-warning">¿Seguro que desea eliminar esta profesión? Esta acción no se puede deshacer.</div>
+}
+else
+{
+    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Id</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nom</dd>
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">@(Model.Des ?? "—")</dd>
+</dl>
+
+<form asp-controller="ProfesionEliminar" asp-action="Eliminar" asp-route-id="@Model.Id" method="post">
+    @if (ViewData.ModelState.IsValid)
+    {
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    }
+    <a class="btn btn-secondary" asp-controller="ProfesionListar" asp-action="Listar">Volver</a>
+</form>

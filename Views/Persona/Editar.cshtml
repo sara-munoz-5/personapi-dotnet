@@ -1,0 +1,47 @@
+@model personapi_dotnet.Models.ViewModels.Persona.PersonaEditarViewModel
+@{
+    ViewData["Title"] = "Editar persona";
+}
+
+<h1>Editar persona</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="PersonaEditar" asp-action="Editar" asp-route-cc="@Model.Cc" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Cc" class="form-label"></label>
+                <input asp-for="Cc" class="form-control" readonly />
+                <div class="form-text">La cédula no se puede cambiar.</div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Apellido" class="form-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Genero" class="form-label"></label>
+                <select asp-for="Genero" asp-items="Model.OpcionesGenero" class="form-select">
+                    <option value="">-- Seleccione --</option>
+                </select>
+                <span asp-validation-for="Genero" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Edad" class="form-label"></label>
+                <input asp-for="Edad" class="form-control" />
+                <span asp-validation-for="Edad" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a class="btn btn-secondary" asp-controller="PersonaListar" asp-action="Listar">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

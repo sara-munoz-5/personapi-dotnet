@@ -1,0 +1,37 @@
+@model personapi_dotnet.Models.ViewModels.Telefono.TelefonoCrearViewModel
+@{
+    ViewData["Title"] = "Nuevo teléfono";
+}
+
+<h1>Nuevo teléfono</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="TelefonoCrear" asp-action="Crear" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Num" class="form-label"></label>
+                <input asp-for="Num" class="form-control" />
+                <span asp-validation-for="Num" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Oper" class="form-label"></label>
+                <input asp-for="Oper" class="form-control" />
+                <span asp-validation-for="Oper" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Duenio" class="form-label"></label>
+                <select asp-for="Duenio" asp-items="Model.Personas" class="form-select">
+                    <option value="">-- Seleccione el dueño --</option>
+                </select>
+                <span asp-validation-for="Duenio" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a class="btn btn-secondary" asp-controller="TelefonoListar" asp-action="Listar">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

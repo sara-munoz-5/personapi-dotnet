@@ -13,28 +13,28 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<List<Telefono>> ObtenerTodos()
+        public async Task<List<Telefono>> ObtenerTodosAsync()
         {
             return await _context.Telefonos
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<Telefono?> ObtenerPorId(string num)
+        public async Task<Telefono?> ObtenerPorIdAsync(string num)
         {
             return await _context.Telefonos
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Num == num);
         }
 
-        public async Task<Telefono> Crear(Telefono telefono)
+        public async Task<Telefono> CrearAsync(Telefono telefono)
         {
             _context.Telefonos.Add(telefono);
             await _context.SaveChangesAsync();
             return telefono;
         }
 
-        public async Task<bool> Actualizar(Telefono telefono)
+        public async Task<bool> ActualizarAsync(Telefono telefono)
         {
             var existente = await _context.Telefonos
                 .FirstOrDefaultAsync(t => t.Num == telefono.Num);
@@ -49,7 +49,7 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
             return true;
         }
 
-        public async Task<bool> Eliminar(string num)
+        public async Task<bool> EliminarAsync(string num)
         {
             var telefono = await _context.Telefonos
                 .FirstOrDefaultAsync(t => t.Num == num);

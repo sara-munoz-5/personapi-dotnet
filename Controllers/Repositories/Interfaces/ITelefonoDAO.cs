@@ -4,10 +4,10 @@ namespace personapi_dotnet.Controllers.Repositories.Interfaces
 {
     public interface ITelefonoDAO
     {
-        Task<List<Telefono>> ObtenerTodos();
-        Task<Telefono?> ObtenerPorId(string num);
-        Task<Telefono> Crear(Telefono telefono);
-        Task<bool> Actualizar(Telefono telefono);
-        Task<bool> Eliminar(string num);
+        Task<List<Telefono>> ObtenerTodosAsync();
+        Task<Telefono?> ObtenerPorIdAsync(string num);
+        Task<Telefono> CrearAsync(Telefono telefono);
+        Task<bool> ActualizarAsync(Telefono telefono);
+        Task<bool> EliminarAsync(string num);
     }
 }

@@ -1,0 +1,20 @@
+@model personapi_dotnet.Models.ViewModels.Telefono.TelefonoDetalleViewModel
+@{
+    ViewData["Title"] = "Detalle del teléfono";
+}
+
+<h1>Detalle del teléfono</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Número</dt>
+    <dd class="col-sm-9">@Model.Num</dd>
+    <dt class="col-sm-3">Operador</dt>
+    <dd class="col-sm-9">@Model.Oper</dd>
+    <dt class="col-sm-3">Dueño</dt>
+    <dd class="col-sm-9"><a asp-controller="PersonaDetalle" asp-action="Detalle" asp-route-cc="@Model.Duenio">@Model.NombreDuenio</a> (cédula @Model.Duenio)</dd>
+</dl>
+
+<p>
+    <a class="btn btn-primary" asp-controller="TelefonoEditar" asp-action="Editar" asp-route-num="@Model.Num">Editar</a>
+    <a class="btn btn-secondary" asp-controller="TelefonoListar" asp-action="Listar">Volver</a>
+</p>

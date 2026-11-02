@@ -13,28 +13,28 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<List<Profesion>> ObtenerTodos()
+        public async Task<List<Profesion>> ObtenerTodosAsync()
         {
             return await _context.Profesions
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<Profesion?> ObtenerPorId(int id)
+        public async Task<Profesion?> ObtenerPorIdAsync(int id)
         {
             return await _context.Profesions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Profesion> Crear(Profesion profesion)
+        public async Task<Profesion> CrearAsync(Profesion profesion)
         {
             _context.Profesions.Add(profesion);
             await _context.SaveChangesAsync();
             return profesion;
         }
 
-        public async Task<bool> Actualizar(Profesion profesion)
+        public async Task<bool> ActualizarAsync(Profesion profesion)
         {
             var existente = await _context.Profesions
                 .FirstOrDefaultAsync(p => p.Id == profesion.Id);
@@ -49,7 +49,7 @@ namespace personapi_dotnet.Controllers.Repositories.Implementations
             return true;
         }
 
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             var profesion = await _context.Profesions
                 .FirstOrDefaultAsync(p => p.Id == id);

@@ -1,0 +1,20 @@
+@model personapi_dotnet.Models.ViewModels.Profesion.ProfesionDetalleViewModel
+@{
+    ViewData["Title"] = "Detalle de la profesión";
+}
+
+<h1>Detalle de la profesión</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Id</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nom</dd>
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">@(Model.Des ?? "—")</dd>
+</dl>
+
+<p>
+    <a class="btn btn-primary" asp-controller="ProfesionEditar" asp-action="Editar" asp-route-id="@Model.Id">Editar</a>
+    <a class="btn btn-secondary" asp-controller="ProfesionListar" asp-action="Listar">Volver</a>
+</p>

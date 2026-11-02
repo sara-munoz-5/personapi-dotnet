@@ -1,0 +1,35 @@
+@model personapi_dotnet.Models.ViewModels.Profesion.ProfesionEditarViewModel
+@{
+    ViewData["Title"] = "Editar profesión";
+}
+
+<h1>Editar profesión</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="ProfesionEditar" asp-action="Editar" asp-route-id="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Id" class="form-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+                <div class="form-text">El id no se puede cambiar.</div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Nom" class="form-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Des" class="form-label"></label>
+                <textarea asp-for="Des" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Des" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a class="btn btn-secondary" asp-controller="ProfesionListar" asp-action="Listar">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
