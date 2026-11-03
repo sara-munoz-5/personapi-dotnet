@@ -12,11 +12,27 @@ Monolito ASP.NET Core MVC con patrón DAO, servicios de negocio y API REST para 
 
 > El enunciado original menciona .NET 7/.NET 6. El proyecto está configurado actualmente para .NET 10; se debe confirmar con el profesor si es necesario cambiar la versión.
 
-## Requisitos
+## Configuración del ambiente
 
-- .NET SDK 10
-- SQL Server 2019/2022, Express o Developer
-- Visual Studio o un editor compatible con .NET
+1. Instalar el [.NET SDK 10](https://dotnet.microsoft.com/download/dotnet/10.0) y comprobarlo:
+
+   ```powershell
+   dotnet --version   # 10.0.x
+   ```
+
+2. Instalar SQL Server 2019/2022 (Express o Developer). Para ejecutar los scripts, instalar también
+   SQL Server Management Studio o `sqlcmd`.
+3. Opcional: Visual Studio 2022 (o un editor compatible con .NET) para abrir `personapi-dotnet.csproj`.
+4. Clonar el repositorio:
+
+   ```powershell
+   git clone https://github.com/sara-munoz-5/personapi-dotnet.git
+   cd personapi-dotnet
+   ```
+
+5. Crear la base con los scripts y revisar la cadena de conexión, como se explica en la sección siguiente.
+
+Los paquetes NuGet (EF Core 10.0.14, Swashbuckle 10.3.1) se descargan solos con `dotnet restore`.
 
 ## Configuración de la base de datos
 
@@ -60,17 +76,49 @@ Desde Visual Studio, elegir el perfil `http` y ejecutar (F5).
 
 ## Despliegue
 
-Publicar en una carpeta y ejecutar el `.dll` publicado:
+### 1. Publicar
 
 ```powershell
 dotnet publish personapi-dotnet.csproj -c Release -o publicado
+```
+
+La carpeta `publicado` queda con todo lo necesario: `personapi-dotnet.dll`, sus dependencias, `appsettings.json`,
+las vistas compiladas y `wwwroot`. El servidor solo necesita el runtime de ASP.NET Core 10, no el SDK.
+
+### 2. Configurar la conexión en el servidor
+
+Usar una de estas dos opciones:
+
+- editar `publicado/appsettings.json` y cambiar `Server` en `PersonaConnection`;
+- o definir la variable de entorno antes de iniciar la aplicación, sin tocar el archivo:
+
+  ```powershell
+  $env:ConnectionStrings__PersonaConnection = "Server=MI_SERVIDOR\SQLEXPRESS;Database=persona_db;Trusted_Connection=True;TrustServerCertificate=True;"
+  ```
+
+La base debe existir en ese servidor, creada con los scripts de `Database/`.
+
+### 3. Ejecutar
+
+```powershell
 cd publicado
 $env:ASPNETCORE_URLS = "http://localhost:5080"
 dotnet personapi-dotnet.dll
 ```
 
+Para comprobar el despliegue, abrir `http://localhost:5080/` (menú), `http://localhost:5080/Personas` (lista leída de
+la base) y `http://localhost:5080/swagger`. Para detenerla, `Ctrl+C`.
+
 La versión publicada corre en el ambiente `Production`. En ese ambiente, los errores muestran una página genérica en
 español y la API responde `ProblemDetails` sin datos internos. Swagger queda disponible en `/swagger`.
+
+### Opcional: IIS
+
+1. Instalar el *ASP.NET Core Hosting Bundle* de .NET 10 en el servidor.
+2. En IIS, crear un sitio cuya ruta física sea la carpeta `publicado` (el `web.config` lo genera `dotnet publish`).
+3. En el grupo de aplicaciones, elegir "Sin código administrado".
+4. Con `Trusted_Connection=True`, dar acceso a `persona_db` en SQL Server al usuario del grupo de aplicaciones
+   (`IIS APPPOOL\<nombre del grupo>`), o usar en la cadena un usuario de SQL Server.
 
 ## Vistas
 
